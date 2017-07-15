@@ -1,3 +1,4 @@
+import Promise, { join, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
 import web3 from '../web3Provider'
@@ -9,12 +10,13 @@ let GitToken
 export function initializeContract ({ contractAddress }) {
   return (dispatch) => {
     try {
-      GitToken = web3.eth.contract(abi).at(contractAddress)
+      GitToken = promisifyContract({ abi, contractAddress })
       dispatch({
         type: 'SET_GITTOKEN_DETAILS',
         id: 'contract',
         value: contractAddress
       })
+      dispatch(getContractDetails({ contractAddress }))
       dispatch(getContributionEvents({ contractAddress }))
     } catch(error) {
       console.log('retrieveConctractDetails::error', error)
@@ -43,8 +45,36 @@ export function getContributionEvents({ contractAddress }) {
   }
 }
 
+export function getContractDetails({ contractAddress }) {
+  return (dispatch) => {
+    if (!GitToken) {
+      dispatch(initializeContract({ contractAddress }))
+    } else {
+      join(
+        GitToken.totalSupply.callAsync(),
+        GitToken.symbol.callAsync(),
+        GitToken.organization.callAsync(),
+      ).then((data) => {
+        console.log('getContractDetails::data', data)
+      }).catch((error) => {
+        dispatch(errorMsg(error))
+      })
+    }
+  }
+}
+
 export function errorMsg (error) {
   return (dispatch) => {
     console.log(`errorMsg::error`, error)
   }
+}
+
+export function promisifyContract ({ abi, contractAddress }) {
+  let contract = web3.eth.contract(abi).at(contractAddress)
+  Object.keys(contract).map((method) => {
+    if (contract[method] && contract[method]['request']) {
+      contract[method] = promisifyAll(contract[method])
+    }
+  })
+  return contract
 }

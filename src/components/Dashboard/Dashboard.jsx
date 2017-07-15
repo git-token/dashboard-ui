@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 
-import { DashboardActions } from '../../actions/index'
+import { ConnectToWebSocket } from '../../actions/DashboardActions'
 import { Charts } from '../index'
 
 class DashboardComponent extends Component {
@@ -12,7 +12,7 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(DashboardActions.ConnectToWebSocket())
+    dispatch(ConnectToWebSocket())
   }
 
   render() {

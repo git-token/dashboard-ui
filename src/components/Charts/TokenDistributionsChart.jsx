@@ -36,6 +36,7 @@ class TokenDistributionsChartComponent extends Component {
   render() {
     return (
       <div>
+        <h3>Total Token Supply</h3>
         <VictoryChart
           width={600} height={200}
           scale={{x: "time"}}

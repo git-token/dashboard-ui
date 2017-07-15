@@ -6,7 +6,6 @@ import { initializeContract } from './ContractActions'
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
 let SocketClient;
-let GitToken
 
 export function ConnectToWebSocket () {
   return (dispatch) => {
