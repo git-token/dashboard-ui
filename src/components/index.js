@@ -1,9 +1,9 @@
 import * as Charts from './Charts/index'
+import * as Tables from './Tables/index'
 import Dashboard from './Dashboard/Dashboard.jsx'
-import Login from './Login.jsx'
 
 export {
-  Login,
   Dashboard,
-  Charts
+  Charts,
+  Tables
 }

@@ -4,8 +4,10 @@ import { Route } from 'react-router-dom'
 import {
   Row, Col
 } from 'react-bootstrap'
-import { ConnectToWebSocket } from '../../actions/DashboardActions'
-import { Charts } from '../index'
+import { ConnectToWebSocket, authenticateGitHubUser } from '../../actions/DashboardActions'
+
+import { TokenDistributionsChart } from '../Charts/index'
+import { TokenDistributionsTable } from '../Tables/index'
 
 class DashboardComponent extends Component {
   constructor(opts) {
@@ -14,6 +16,7 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
+    dispatch(authenticateGitHubUser())
     dispatch(ConnectToWebSocket())
   }
 
@@ -22,11 +25,15 @@ class DashboardComponent extends Component {
     return (
       <div>
         <Row>
+          <Col sm={2}>
+            {/*<Route exact path="/" component={Charts['TokenDistributionsChart']}/>*/}
+          </Col>
           <Col sm={4}>
             {/*<Route exact path="/" component={Charts['TokenDistributionsChart']}/>*/}
           </Col>
-          <Col sm={8}>
-            <Route exact path="/" component={Charts['TokenDistributionsChart']}/>
+          <Col sm={6}>
+            <TokenDistributionsChart />
+            <TokenDistributionsTable />
           </Col>
         </Row>
       </div>

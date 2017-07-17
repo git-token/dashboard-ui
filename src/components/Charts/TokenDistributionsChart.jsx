@@ -12,15 +12,13 @@ class TokenDistributionsChartComponent extends Component {
     const { dispatch } = this.props
   }
 
-  getUnique
-
   parseContributions () {
     const { dashboard: { gittoken: { contributions, decimals } } } = this.props
     const events = Object.keys(contributions)
 
     let initValue = 0
 
-    if (events.length > 2) {
+    if (events.length) {
       return events.sort((a, b) => {
         const d1 = new Date(contributions[a]['args']['date'].toNumber())
         const d2 = new Date(contributions[b]['args']['date'].toNumber())
