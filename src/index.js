@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Dashboard, Login } from './components/index'
 import { store, history } from './store'
-
+import web3 from './web3Provider'
 // // Create a history of your choosing (we're using a browser history in this case)
 // const history = createHistory()
 //
@@ -21,15 +21,15 @@ import { store, history } from './store'
 //   applyMiddleware(middleware),
 //   applyMiddleware(thunk),
 // )
-
-
-ReactDOM.render(
-  <BrowserRouter history={history}>
-    <Provider store={store}>
-        <div>
-          <Route exact path="/" component={Dashboard}/>
-        </div>
-    </Provider>
-  </BrowserRouter>,
-  document.getElementById('app')
-)
+window.addEventListener('load', () => {
+  ReactDOM.render(
+    <BrowserRouter history={history}>
+      <Provider store={store}>
+          <div>
+            <Route exact path="/" component={Dashboard}/>
+          </div>
+      </Provider>
+    </BrowserRouter>,
+    document.getElementById('app')
+  )
+})

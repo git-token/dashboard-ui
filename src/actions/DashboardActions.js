@@ -1,4 +1,4 @@
-import Promise, { promisifyAll } from 'bluebird'
+import Promise, { delay, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
 import axios from 'axios'
@@ -7,7 +7,12 @@ import { initializeContract } from './ContractActions'
 import { socketServer } from '../../app.config'
 import web3 from '../web3Provider'
 
+console.log('web3.currentProvider', web3.currentProvider)
+console.log('window.web3.currentProvider', window.web3.currentProvider)
+
 const eth = promisifyAll(web3.eth)
+
+
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
 let SocketClient;
@@ -41,7 +46,7 @@ export function retrieveConctractDetails() {
 
 export function authenticateGitHubUser() {
   return (dispatch) => {
-    eth.getAccountsAsync()
+    delay(100, eth.getAccountsAsync())
       .then((accounts) => {
         const address = accounts[0]
         console.log('address', address)
