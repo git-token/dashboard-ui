@@ -50,9 +50,9 @@ export function authenticateGitHubUser() {
       .then((result) => {
         console.log('authenticateGitHubUser::result', result)
       })
-      .catch((error) => {
-        console.log('authenticateGitHubUser::error', error)
-      })
+      // .catch((error) => {
+      //   console.log('authenticateGitHubUser::error', error)
+      // })
     // window.location.replace('/auth/github')
   }
 }
