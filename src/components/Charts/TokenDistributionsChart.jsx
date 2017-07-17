@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { VictoryChart, VictoryLine, VictoryTheme } from 'victory'
+import { VictoryLabel, VictoryChart, VictoryLine, VictoryTheme } from 'victory'
 
 
 class TokenDistributionsChartComponent extends Component {
@@ -12,8 +12,10 @@ class TokenDistributionsChartComponent extends Component {
     const { dispatch } = this.props
   }
 
+  getUnique
+
   parseContributions () {
-    const { dashboard: { gittoken: { contributions } } } = this.props
+    const { dashboard: { gittoken: { contributions, decimals } } } = this.props
     const events = Object.keys(contributions)
 
     let initValue = 0
@@ -27,27 +29,37 @@ class TokenDistributionsChartComponent extends Component {
         const { args: { date, value } } = contributions[e]
         return {
           x: new Date(date.toNumber() * 1000).getTime(),
-          y: parseInt(initValue += (value.toNumber() / Math.pow(10, 8)))
+          y: parseInt(initValue += (value.toNumber() / Math.pow(10, decimals)))
         }
       })
     }
   }
 
   render() {
+    const { dashboard: { gittoken } } = this.props
+    const { symbol, organization } = gittoken
+
+    const data = this.parseContributions()
+    const totalSupply = !data ? 0 : data[data.length - 1]['y']
+
     return (
-      <div>
-        <h3>Total Token Supply</h3>
+      <div style={{ marginTop: '25px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '-10px' }}>
+          <h3>{`Total Token Supply | ${totalSupply} ${symbol}`}</h3>
+        </div>
         <VictoryChart
-          width={600} height={200}
           scale={{x: "time"}}
           theme={VictoryTheme.material}
+          width={600}
+          height={200}
+          responsive={true}
         >
           <VictoryLine
             style={{
               data: { stroke: "#c43a31" },
               parent: { border: "1px solid #ccc"}
             }}
-            data={this.parseContributions()}
+            data={data}
           />
         </VictoryChart>
       </div>

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
-
+import {
+  Row, Col
+} from 'react-bootstrap'
 import { ConnectToWebSocket } from '../../actions/DashboardActions'
 import { Charts } from '../index'
 
@@ -19,8 +21,14 @@ class DashboardComponent extends Component {
 
     return (
       <div>
-        <p>Dashboard</p>
-        <Route exact path="/" component={Charts['TokenDistributionsChart']}/>
+        <Row>
+          <Col sm={4}>
+            {/*<Route exact path="/" component={Charts['TokenDistributionsChart']}/>*/}
+          </Col>
+          <Col sm={8}>
+            <Route exact path="/" component={Charts['TokenDistributionsChart']}/>
+          </Col>
+        </Row>
       </div>
     )
   }

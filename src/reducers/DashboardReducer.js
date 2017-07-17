@@ -6,7 +6,11 @@ const INITITAL_DASHBOARD_STATE = {
   },
   gittoken: {
     contractAddress: '',
-    contributions: {}
+    contributions: {},
+    symbol: '',
+    organization: '',
+    totalSupply: '',
+    decimals: 8
   },
 }
 
