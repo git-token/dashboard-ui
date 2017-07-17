@@ -1,12 +1,14 @@
 const INITITAL_DASHBOARD_STATE = {
   // Details about the github user
   github: {
-    login: '',
+    username: '',
     email: ''
   },
   gittoken: {
+    contributorAddress: '',
     contractAddress: '',
     contributions: {},
+    contributors: {},
     symbol: '',
     organization: '',
     totalSupply: '',
@@ -23,6 +25,17 @@ export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action)
           ...state['gittoken'],
           contributions: {
             ...state['gittoken']['contributions'],
+            [action.id]: action.value
+          }
+        }
+      }
+    case 'UPDATE_GITTOKEN_CONTRIBUTORS':
+      return {
+        ...state,
+        gittoken: {
+          ...state['gittoken'],
+          contributors: {
+            ...state['gittoken']['contributors'],
             [action.id]: action.value
           }
         }
