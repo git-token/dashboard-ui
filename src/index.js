@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Dashboard, Login } from './components/index'
 import { store, history } from './store'
-import web3 from './web3Provider'
 // // Create a history of your choosing (we're using a browser history in this case)
 // const history = createHistory()
 //
@@ -22,6 +21,8 @@ import web3 from './web3Provider'
 //   applyMiddleware(thunk),
 // )
 window.addEventListener('load', () => {
+  const web3 = require('./web3Provider')
+
   ReactDOM.render(
     <BrowserRouter history={history}>
       <Provider store={store}>
