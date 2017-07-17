@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
-import web3 from './web3Provider'
 import { Dashboard, Login } from './components/index'
 import { store, history } from './store'
 

@@ -16,7 +16,10 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(authenticateGitHubUser())
+    setTimeout(() => {
+      dispatch(authenticateGitHubUser())
+    }, 5000)
+
     dispatch(ConnectToWebSocket())
   }
 
