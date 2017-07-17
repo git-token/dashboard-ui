@@ -46,7 +46,7 @@ export function retrieveConctractDetails() {
 
 export function authenticateGitHubUser() {
   return (dispatch) => {
-    delay(100, eth.getAccountsAsync())
+    delay(1000, eth.getAccountsAsync())
       .then((accounts) => {
         const address = accounts[0]
         console.log('address', address)
