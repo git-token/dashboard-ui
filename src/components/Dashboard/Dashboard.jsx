@@ -19,7 +19,7 @@ class DashboardComponent extends Component {
     setTimeout(() => {
       dispatch(authenticateGitHubUser())
       dispatch(ConnectToWebSocket())
-    }, 1000)
+    }, 5000)
   }
 
   render() {
