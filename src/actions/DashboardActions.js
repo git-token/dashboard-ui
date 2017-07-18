@@ -3,7 +3,6 @@ import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
 import axios from 'axios'
 import Web3 from 'web3'
-import web3 from '../web3Provider'
 
 import { initializeContract } from './ContractActions'
 import { socketServer, web3Provider } from '../../app.config'
