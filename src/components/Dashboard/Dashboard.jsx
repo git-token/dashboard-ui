@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 import {
   Row, Col
 } from 'react-bootstrap'
-import { ConnectToWebSocket, authenticateGitHubUser } from '../../actions/DashboardActions'
+import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../actions/DashboardActions'
 
 import { TokenDistributionsChart } from '../Charts/index'
 import { TokenDistributionsTable } from '../Tables/index'
@@ -16,11 +16,11 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(Web3Loaded())
+    dispatch(loadWeb3())
   }
 
   componentDidUpdate() {
-    const { dispatch, gittoken: { web3Provider } } = this.props
+    const { dispatch, dashboard: { gittoken: { web3Provider } } } = this.props
     if (web3Provider) {
       dispatch(authenticateGitHubUser())
       dispatch(ConnectToWebSocket())
