@@ -8,9 +8,6 @@ import { initializeContract } from './ContractActions'
 import { socketServer } from '../../app.config'
 
 import web3 from '../web3Provider'
-const eth = promisifyAll(web3.eth)
-
-
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
 let SocketClient;
@@ -44,6 +41,8 @@ export function retrieveConctractDetails() {
 
 export function authenticateGitHubUser() {
   return (dispatch) => {
+    const eth = promisifyAll(web3.eth)
+    
     eth.getAccountsAsync()
       .then((accounts) => {
         const address = accounts[0]
