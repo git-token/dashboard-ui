@@ -1,6 +1,6 @@
 {
   "name": "gittoken-dashboard",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Dashboard for GitToken Contracts",
   "main": "./dist/index",
   "scripts": {

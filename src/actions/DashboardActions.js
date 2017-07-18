@@ -2,7 +2,7 @@ import Promise, { delay, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
 import axios from 'axios'
-import setupWeb3Provider from '../web3Provider'
+import web3 from '../web3Provider'
 
 import { initializeContract } from './ContractActions'
 import { socketServer, web3Provider } from '../../app.config'
@@ -40,12 +40,7 @@ export function retrieveConctractDetails() {
 
 export function authenticateGitHubUser() {
   return (dispatch) => {
-    setupWeb3Provider()
-      .then((_web3) => {
-        const eth = promisifyAll(_web3.eth)
-        return eth.getAccountsAsync()
-      })
-      .then((accounts) => {
+      promisifyAll(window.web3.eth).getAccountsAsync().then((accounts) => {
         const address = accounts[0]
         console.log('address', address)
         return axios.post(`https://gittoken.org/gittoken/verify/${address}`)
