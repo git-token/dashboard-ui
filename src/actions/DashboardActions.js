@@ -56,7 +56,7 @@ export function retrieveConctractDetails() {
 
 export function authenticateGitHubUser() {
   return (dispatch) => {
-      const eth = promisifyAll(window.web3.eth)
+      const eth = promisifyAll(web3.eth)
       eth.getAccountsAsync().then((accounts) => {
         const address = accounts[0]
         console.log('address', address)
