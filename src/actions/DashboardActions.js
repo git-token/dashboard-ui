@@ -2,15 +2,30 @@ import Promise, { delay, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
 import axios from 'axios'
-import Web3 from 'web3'
 
 import { initializeContract } from './ContractActions'
 import { socketServer, web3Provider } from '../../app.config'
+import web3 from '../web3Provider'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
-let web3 = new Web3(window.web3.currentProvider)
 let SocketClient;
+
+export function loadWeb3() {
+  return (dispatch) => {
+    if(!web3 || !web3.eth || !web3.currentProvider) {
+      setTimeout(() => {
+        dispatch(Web3Loaded())
+      }, 1000)
+    } else {
+      dispatch({
+        type: 'SET_GITTOKEN_DETAILS',
+        id: 'web3Provider',
+        value: web3.currentProvider
+      })
+    }
+  }
+}
 
 export function ConnectToWebSocket () {
   return (dispatch) => {

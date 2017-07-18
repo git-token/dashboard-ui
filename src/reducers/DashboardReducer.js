@@ -12,7 +12,8 @@ const INITITAL_DASHBOARD_STATE = {
     symbol: '',
     organization: '',
     totalSupply: '',
-    decimals: 8
+    decimals: 8,
+    web3Provider
   },
 }
 

@@ -16,10 +16,15 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    setTimeout(() => {
+    dispatch(Web3Loaded())
+  }
+
+  componentDidUpdate() {
+    const { dispatch, gittoken: { web3Provider } } = this.props
+    if (web3Provider) {
       dispatch(authenticateGitHubUser())
       dispatch(ConnectToWebSocket())
-    }, 5000)
+    }
   }
 
   render() {
