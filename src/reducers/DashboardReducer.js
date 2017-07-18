@@ -1,8 +1,8 @@
 const INITITAL_DASHBOARD_STATE = {
   // Details about the github user
   github: {
-    username: '',
-    email: ''
+    accessToken: '',
+    profile: {}
   },
   gittoken: {
     contributorAddress: '',

@@ -23,6 +23,28 @@ export function initializeContract ({ contractAddress }) {
   }
 }
 
+export function getContributorVerifiedEvents({ contractAddress }) {
+  return (dispatch) => {
+    if (!GitToken) {
+      dispatch(initializeContract({ contractAddress }))
+    } else {
+      let events = GitToken.ContributorVerified({}, { fromBlock: 0, toBlock: 'latest' })
+      events.watch((error, result) => {
+        if (error) {
+          dispatch(errorMsg(error))
+        } else {
+          const { args: { contributor, username } } = result
+          dispatch({
+            type: 'UPDATE_GITTOKEN_CONTRIBUTORS',
+            id: contributor,
+            value: username
+          })
+        }
+      })
+    }
+  }
+}
+
 export function getContributionEvents({ contractAddress }) {
   return (dispatch) => {
     if (!GitToken) {

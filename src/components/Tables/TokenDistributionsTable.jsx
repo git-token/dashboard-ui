@@ -15,7 +15,7 @@ class TokenDistributionsTableComponent extends Component {
   }
 
   contributionHistory () {
-    const { dashboard: { gittoken: { contributions, decimals } } } = this.props
+    const { dashboard: { gittoken: { contributors, contributions, decimals } } } = this.props
     const events = Object.keys(contributions)
 
     let initValue = 0
@@ -29,7 +29,7 @@ class TokenDistributionsTableComponent extends Component {
         const { args: { contributor, date, value, rewardType } } = contributions[e]
         return (
           <tr key={i}>
-            <td>{contributor}</td>
+            <td>{contributors[contributor]}</td>
             <td>{rewardType}</td>
             <td>{value.toNumber() / Math.pow(10, decimals)}</td>
             <td>{new Date(date.toNumber() * 1000).toString()}</td>

@@ -68,26 +68,34 @@ export function authenticateGitHubUser() {
         if (!authentication) {
           window.location.replace('/auth/github')
         } else {
-          console.log('authenticateGitHubUser::user', user)
           const username = user['profile']['username']
 
           /**
            * Dispatch details about the user to Redux store for UI rendering
            */
+
           dispatch({
             type: 'UPDATE_GITTOKEN_CONTRIBUTORS',
             id: address,
             value: username
           })
+
           dispatch({
             type: 'SET_GITTOKEN_DETAILS',
             id: 'contributorAddress',
             value: address
           })
+
           dispatch({
             type: 'SET_GITHUB_DETAILS',
-            id: 'username',
-            value: username
+            id: 'accessToken',
+            value: user['accessToken']
+          })
+
+          dispatch({
+            type: 'SET_GITHUB_DETAILS',
+            id: 'profile',
+            value: user['profile']
           })
         }
       })
