@@ -6,8 +6,8 @@ import Web3 from 'web3'
 
 import { initializeContract } from './ContractActions'
 import { socketServer } from '../../app.config'
-// import web3 from '../web3Provider'
-const web3 = new Web3(window.web3.currentProvider)
+
+import web3 from '../web3Provider'
 const eth = promisifyAll(web3.eth)
 
 
