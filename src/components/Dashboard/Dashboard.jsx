@@ -21,7 +21,7 @@ class DashboardComponent extends Component {
 
   componentDidUpdate() {
     const { dispatch, dashboard: { gittoken: { web3Provider } } } = this.props
-    if (web3Provider) {
+    if (web3Provider && web3Provider.length != 0) {
       dispatch(authenticateGitHubUser())
       dispatch(ConnectToWebSocket())
     }
