@@ -1,6 +1,7 @@
 import Promise, { join, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
+import web3 from '../web3Provider'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
