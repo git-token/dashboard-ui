@@ -5,12 +5,22 @@ import axios from 'axios'
 import Web3 from 'web3'
 
 import { initializeContract } from './ContractActions'
-import { socketServer } from '../../app.config'
+import { socketServer, web3Provider } from '../../app.config'
 
-import web3 from '../web3Provider'
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
 let SocketClient;
+
+export function setupWeb3Provider() {
+  return new Promise((resolve, reject) => {
+    if (typeof window.web3 !== 'undefined') {
+      window.web3 = new Web3(window.web3.currentProvider)
+    } else {
+      window.web3 = new Web3(new Web3.providers.HttpProvider(web3Provider))
+    }
+    resolve(window.web3)
+  })
+}
 
 export function ConnectToWebSocket () {
   return (dispatch) => {
@@ -42,8 +52,11 @@ export function retrieveConctractDetails() {
 export function authenticateGitHubUser() {
   return (dispatch) => {
     const eth = promisifyAll(web3.eth)
-    
-    eth.getAccountsAsync()
+    setupWeb3Provider()
+      .then((_web3) => {
+        const eth = promisifyAll(_web3.eth)
+        return eth.getAccountsAsync()
+      })
       .then((accounts) => {
         const address = accounts[0]
         console.log('address', address)
