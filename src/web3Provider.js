@@ -8,7 +8,12 @@ function setupWeb3Provider() {
     return new Web3(new Web3.providers.HttpProvider(web3Provider))
   }
 }
-console.log('window.web3.currentProvider', window.web3.currentProvider)
-const _web3 = new Web3(window.web3.currentProvider) //setupWeb3Provider()
+// console.log('window.web3.currentProvider', window.web3.currentProvider)
+
+const _web3 = window.web3 ?
+  new Web3(window.web3.currentProvider) :
+  setTimeout(() => {
+    return new Web3(window.web3.currentProvider)
+  }, 1000) //setupWeb3Provider()
 
 export default _web3
