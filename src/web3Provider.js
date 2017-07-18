@@ -9,8 +9,6 @@ function setupWeb3Provider() {
   }
 }
 
-window.web3 = setupWeb3Provider()
-
-const web3 = window.web3
+const web3 = setupWeb3Provider()
 
 export default web3

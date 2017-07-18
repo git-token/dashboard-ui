@@ -2,6 +2,7 @@ import Promise, { delay, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
 import axios from 'axios'
+import Web3 from 'web3'
 import web3 from '../web3Provider'
 
 import { initializeContract } from './ContractActions'
@@ -9,6 +10,7 @@ import { socketServer, web3Provider } from '../../app.config'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
+let web3 = new Web3(window.web3.currentProvider)
 let SocketClient;
 
 export function ConnectToWebSocket () {
@@ -40,8 +42,6 @@ export function retrieveConctractDetails() {
 
 export function authenticateGitHubUser() {
   return (dispatch) => {
-      console.log('window.web3', window.web3)
-      console.log('web3', web3)
       const eth = promisifyAll(window.web3.eth)
       eth.getAccountsAsync().then((accounts) => {
         const address = accounts[0]
