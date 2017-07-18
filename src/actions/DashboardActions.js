@@ -40,7 +40,10 @@ export function retrieveConctractDetails() {
 
 export function authenticateGitHubUser() {
   return (dispatch) => {
-      promisifyAll(window.web3.eth).getAccountsAsync().then((accounts) => {
+      console.log('window.web3', window.web3)
+      console.log('web3', web3)
+      const eth = promisifyAll(window.web3.eth)
+      eth.getAccountsAsync().then((accounts) => {
         const address = accounts[0]
         console.log('address', address)
         return axios.post(`https://gittoken.org/gittoken/verify/${address}`)
