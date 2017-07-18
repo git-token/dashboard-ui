@@ -10,6 +10,7 @@ const INITITAL_DASHBOARD_STATE = {
     contributions: {},
     contributors: {},
     symbol: '',
+    name: '',
     organization: '',
     totalSupply: '',
     decimals: 8,

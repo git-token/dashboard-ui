@@ -76,11 +76,13 @@ export function getContractDetails({ contractAddress }) {
         GitToken.symbol.callAsync(),
         GitToken.organization.callAsync(),
         GitToken.decimals.callAsync(),
+        GitToken.name.callAsync(),
       ).then((data) => {
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'totalSupply', value: data[0].toNumber() / Math.pow(10, data[3].toNumber()) })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'symbol', value: data[1] })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'organization', value: data[2] })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'decimals', value: data[3].toNumber() })
+        dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'name', value: data[4] })
       }).catch((error) => {
         dispatch(errorMsg(error))
       })

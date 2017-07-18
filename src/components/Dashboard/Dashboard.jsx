@@ -8,6 +8,7 @@ import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../acti
 
 import { TokenDistributionsChart } from '../Charts/index'
 import { TokenDistributionsTable } from '../Tables/index'
+import { Header } from '../Layout/index'
 
 class DashboardComponent extends Component {
   constructor(opts) {
@@ -23,6 +24,9 @@ class DashboardComponent extends Component {
 
     return (
       <div>
+        <Row>
+          <Col sm={12}></Col>
+        </Row>
         <Row>
           <Col sm={2}>
             {/*<Route exact path="/" component={Charts['TokenDistributionsChart']}/>*/}
