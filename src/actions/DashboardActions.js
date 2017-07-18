@@ -5,25 +5,28 @@ import axios from 'axios'
 
 import { initializeContract } from './ContractActions'
 import { socketServer, web3Provider } from '../../app.config'
-import web3 from '../web3Provider'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
+
 
 let SocketClient;
 
 export function loadWeb3() {
   return (dispatch) => {
-    if(!web3 || !web3.eth || !web3.currentProvider) {
-      setTimeout(() => {
+    delay(5000).then(() => {
+      console.log('web3.currentProvider', web3.currentProvider)
+      if(!web3 || !web3.eth || !web3.currentProvider) {
         dispatch(loadWeb3())
-      }, 1000)
-    } else {
-      dispatch({
-        type: 'SET_GITTOKEN_DETAILS',
-        id: 'web3Provider',
-        value: web3.currentProvider
-      })
-    }
+      } else {
+        dispatch({
+          type: 'SET_GITTOKEN_DETAILS',
+          id: 'web3Provider',
+          value: web3.currentProvider
+        })
+      }
+    }).catch((error) => {
+      console.log('error', error)
+    })
   }
 }
 
