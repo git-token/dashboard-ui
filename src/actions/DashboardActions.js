@@ -15,7 +15,7 @@ export function loadWeb3() {
   return (dispatch) => {
     if(!web3 || !web3.eth || !web3.currentProvider) {
       setTimeout(() => {
-        dispatch(Web3Loaded())
+        dispatch(loadWeb3())
       }, 1000)
     } else {
       dispatch({
