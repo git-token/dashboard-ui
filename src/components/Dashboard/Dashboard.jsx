@@ -25,7 +25,9 @@ class DashboardComponent extends Component {
     return (
       <div>
         <Row>
-          <Col sm={12}></Col>
+          <Col sm={12}>
+            <Header />
+          </Col>
         </Row>
         <Row>
           <Col sm={2}>
