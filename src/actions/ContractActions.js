@@ -1,7 +1,7 @@
 import Promise, { join, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
-import web3 from '../web3Provider'
+import setupWeb3Provider from '../web3Provider'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
@@ -74,11 +74,13 @@ export function errorMsg (error) {
 }
 
 export function promisifyContract ({ abi, contractAddress }) {
-  let contract = web3.eth.contract(abi).at(contractAddress)
-  Object.keys(contract).map((method) => {
-    if (contract[method] && contract[method]['request']) {
-      contract[method] = promisifyAll(contract[method])
-    }
+  setupWeb3Provider().then((_web3) => {
+    let contract = _web3.eth.contract(abi).at(contractAddress)
+    Object.keys(contract).map((method) => {
+      if (contract[method] && contract[method]['request']) {
+        contract[method] = promisifyAll(contract[method])
+      }
+    })
+    return contract
   })
-  return contract
 }
