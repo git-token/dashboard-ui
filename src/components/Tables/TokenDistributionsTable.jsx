@@ -26,7 +26,6 @@ class TokenDistributionsTableComponent extends Component {
         const d2 = new Date(contributions[b]['args']['date'].toNumber())
         return d2 - d1
       }).map((e, i) => {
-        console.log('contributions[e]', contributions[e])
         const { args: { contributor, username, date, value, rewardType } } = contributions[e]
         return (
           <tr key={i}>

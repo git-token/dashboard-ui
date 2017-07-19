@@ -17,7 +17,6 @@ export function initializeContract ({ contractAddress }) {
       })
       dispatch(getContractDetails({ contractAddress }))
       dispatch(getContributionEvents({ contractAddress }))
-      dispatch(getContributorVerifiedEvents({ contractAddress }))
     } catch(error) {
       console.log('retrieveConctractDetails::error', error)
     }
@@ -48,11 +47,14 @@ export function getContributorVerifiedEvents({ contractAddress }) {
 
 export function getContributionEvents({ contractAddress }) {
   return (dispatch) => {
+    console.log('getContributionEvents::contractAddress', contractAddress)
     if (!GitToken) {
       dispatch(initializeContract({ contractAddress }))
     } else {
       let events = GitToken.Contribution({}, { fromBlock: 0, toBlock: 'latest' })
       events.watch((error, result) => {
+        console.log('error', error)
+        console.log('result', result)
         if (error) {
           dispatch(errorMsg(error))
         } else {
