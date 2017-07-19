@@ -17,6 +17,7 @@ export function initializeContract ({ contractAddress }) {
       })
       dispatch(getContractDetails({ contractAddress }))
       dispatch(getContributionEvents({ contractAddress }))
+      dispatch(getContributorVerifiedEvents({ contractAddress }))
     } catch(error) {
       console.log('retrieveConctractDetails::error', error)
     }
