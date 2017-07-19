@@ -10,13 +10,10 @@ class HeaderComponent extends Component {
     super(opts)
   }
 
-  componentDidMount() {
+  render() {
     const { dispatch, dashboard: { github, gittoken } } = this.props
     const { name, symbol, organization } = gittoken
     const { profile: { username } } = github
-  }
-
-  render() {
 
     return (
       <Row>
