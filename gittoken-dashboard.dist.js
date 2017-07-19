@@ -96794,7 +96794,7 @@ function loadWeb3() {
       if (!web3 || !web3.eth || !web3.currentProvider) {
         dispatch(loadWeb3());
       } else {
-        // dispatch(authenticateGitHubUser())
+        dispatch(authenticateGitHubUser());
         dispatch(ConnectToWebSocket());
       }
       return null;
