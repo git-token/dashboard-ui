@@ -25,12 +25,12 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
-    ,new webpack.DefinePlugin({
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false
+    //   }
+    // }),
+    new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"development"'
     })
     // ,new ServiceWorkerWebpackPlugin({

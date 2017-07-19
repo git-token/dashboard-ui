@@ -2,16 +2,18 @@ const INITITAL_DASHBOARD_STATE = {
   // Details about the github user
   github: {
     accessToken: '',
-    profile: {}
+    profile: {
+      username: 'Ryanmtate'
+    }
   },
   gittoken: {
-    contributorAddress: '',
+    contributorAddress: '0x8CB2CeBB0070b231d4BA4D3b747acAebDFbbD142',
     contractAddress: '',
     contributions: {},
     contributors: {},
-    symbol: '',
-    name: '',
-    organization: '',
+    symbol: 'GTK',
+    name: 'GitToken',
+    organization: 'git-token',
     totalSupply: '',
     decimals: 8,
     web3Provider: ''

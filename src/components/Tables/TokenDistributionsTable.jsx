@@ -26,10 +26,10 @@ class TokenDistributionsTableComponent extends Component {
         const d2 = new Date(contributions[b]['args']['date'].toNumber())
         return d2 - d1
       }).map((e, i) => {
-        const { args: { contributor, date, value, rewardType } } = contributions[e]
+        const { args: { contributor, username, date, value, rewardType } } = contributions[e]
         return (
           <tr key={i}>
-            <td>{contributors[contributor]}</td>
+            <td>{username}</td>
             <td>{rewardType}</td>
             <td>{value.toNumber() / Math.pow(10, decimals)}</td>
             <td>{new Date(date.toNumber() * 1000).toString()}</td>

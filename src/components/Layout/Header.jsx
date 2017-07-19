@@ -12,20 +12,22 @@ class HeaderComponent extends Component {
 
   render() {
     const { dispatch, dashboard: { github, gittoken } } = this.props
-    const { name, symbol, organization } = gittoken
+    const { name, symbol, organization, contributorAddress } = gittoken
     const { profile: { username } } = github
 
     return (
       <Row>
-        <Col sm={9}>
-          <h1>{name}
-            <small> | {symbol} |
-              <a href={`https://github.com/${organization}`} target="_blank" ><img src="https://img.shields.io/badge/GitHub-Active-orange.svg"/></a>
-            </small>
-          </h1>
+        <Col sm={8}>
+          <div style={{ marginLeft: '25px'}}>
+            <h1>{name}
+              <small> | <a href="#"><img src={`https://img.shields.io/badge/Trade-${symbol}-brightgreen.svg`}/></a>  <a href={`https://github.com/${organization}`} target="_blank" ><img src="https://img.shields.io/badge/Status-ALPHA-orange.svg"/></a></small>
+            </h1>
+          </div>
         </Col>
-        <Col sm={3}>
-          <small>Logged In as {username}</small>
+        <Col sm={4}>
+          <div style={{ marginTop: '10px' }}>
+            <small>Logged In as {username} | {contributorAddress}</small>
+          </div>
         </Col>
       </Row>
     )

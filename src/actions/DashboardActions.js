@@ -8,7 +8,6 @@ import { socketServer, web3Provider } from '../../app.config'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
-
 let SocketClient;
 
 export function loadWeb3() {
@@ -18,7 +17,7 @@ export function loadWeb3() {
       if(!web3 || !web3.eth || !web3.currentProvider) {
         dispatch(loadWeb3())
       } else {
-        dispatch(authenticateGitHubUser())
+        // dispatch(authenticateGitHubUser())
         dispatch(ConnectToWebSocket())
       }
       return null;
