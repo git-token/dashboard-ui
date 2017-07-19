@@ -35,15 +35,14 @@ class TokenDistributionsChartComponent extends Component {
 
   render() {
     const { dashboard: { gittoken } } = this.props
-    const { symbol, organization } = gittoken
+    const { symbol, organization, totalSupply, decimals } = gittoken
 
     const data = this.parseContributions()
-    const totalSupply = !data ? 0 : data[data.length - 1]['y']
 
     return (
       <div style={{ marginTop: '25px' }}>
         <div style={{ textAlign: 'center', marginBottom: '-10px' }}>
-          <h3>{`Total Token Supply | ${totalSupply} ${symbol}`}</h3>
+          <h3>{`Total Token Supply | ${totalSupply / Math.pow(10, decimals)} ${symbol}`}</h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}
@@ -54,7 +53,7 @@ class TokenDistributionsChartComponent extends Component {
         >
           <VictoryLine
             style={{
-              data: { stroke: "#c43a31" },
+              data: { stroke: "tomato" },
               parent: { border: "1px solid #ccc"}
             }}
             data={data}

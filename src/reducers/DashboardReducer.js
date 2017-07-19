@@ -14,14 +14,52 @@ const INITITAL_DASHBOARD_STATE = {
     symbol: '', //'GTK',
     name: '', //'GitToken',
     organization: '', //'git-token',
-    totalSupply: '',
+    totalSupply: 0,
     decimals: 8,
-    web3Provider: ''
+    rewardFrequencies: {},
+    leaderBoard: {},
+    showSideNav: false
   },
 }
 
 export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action) {
   switch(action.type) {
+    case 'UPDATE_LEADER_BOARD':
+      return {
+        ...state,
+        gittoken: {
+          ...state['gittoken'],
+          leaderBoard: {
+            ...state['gittoken']['leaderBoard'],
+            [action.id]: state['gittoken']['leaderBoard'][action.id] ?
+              state['gittoken']['leaderBoard'][action.id] += action.value :
+              state['gittoken']['leaderBoard'][action.id] = action.value
+          }
+        }
+      }
+    case 'UPDATE_TOTAL_SUPPLY':
+      return {
+        ...state,
+        gittoken: {
+          ...state['gittoken'],
+          totalSupply: state['gittoken']['totalSupply'] ?
+            state['gittoken']['totalSupply'] += action.value :
+            state['gittoken']['totalSupply'] = action.value
+        }
+      }
+    case 'UPDATE_CONTRIBUTION_FREQUENCY':
+      return {
+        ...state,
+        gittoken: {
+          ...state['gittoken'],
+          rewardFrequencies: {
+            ...state['gittoken']['rewardFrequencies'],
+            [action.id]: state['gittoken']['rewardFrequencies'][action.id] ?
+              state['gittoken']['rewardFrequencies'][action.id] += 1 :
+              state['gittoken']['rewardFrequencies'][action.id] = 1
+          }
+        }
+      }
     case 'UPDATE_GITTOKEN_CONTRIBUTION':
       return {
         ...state,

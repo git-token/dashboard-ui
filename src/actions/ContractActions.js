@@ -45,19 +45,58 @@ export function getContributorVerifiedEvents({ contractAddress }) {
   }
 }
 
+export function rewardFrequency({ contributionEvent }) {
+  return (dispatch) => {
+    const { args: { rewardType } } = contributionEvent
+    dispatch({
+      type: 'UPDATE_CONTRIBUTION_FREQUENCY',
+      id: rewardType,
+      value: 1
+    })
+    dispatch({
+      type: 'UPDATE_CONTRIBUTION_FREQUENCY',
+      id: 'total',
+      value: 1
+    })
+  }
+}
+
+export function leaderBoard({ contributionEvent }) {
+  return (dispatch) => {
+    const { args: { username, value } } = contributionEvent
+    dispatch({
+      type: 'UPDATE_LEADER_BOARD',
+      id: username,
+      value: value.toNumber()
+    })
+  }
+}
+
+export function totalTokensCreated({ contributionEvent }) {
+  return (dispatch) => {
+    const { args: { value } } = contributionEvent
+    dispatch({
+      type: 'UPDATE_TOTAL_SUPPLY',
+      value: value.toNumber()
+    })
+  }
+}
+
 export function getContributionEvents({ contractAddress }) {
   return (dispatch) => {
     console.log('getContributionEvents::contractAddress', contractAddress)
     if (!GitToken) {
       dispatch(initializeContract({ contractAddress }))
     } else {
+      // console.log('GitToken', GitToken)
       let events = GitToken.Contribution({}, { fromBlock: 0, toBlock: 'latest' })
       events.watch((error, result) => {
-        console.log('error', error)
-        console.log('result', result)
         if (error) {
           dispatch(errorMsg(error))
         } else {
+          dispatch(totalTokensCreated({ contributionEvent: result }))
+          dispatch(leaderBoard({ contributionEvent: result }))
+          dispatch(rewardFrequency({ contributionEvent: result }))
           dispatch({
             type: 'UPDATE_GITTOKEN_CONTRIBUTION',
             id: result['transactionHash'],
@@ -81,7 +120,8 @@ export function getContractDetails({ contractAddress }) {
         GitToken.decimals.callAsync(),
         GitToken.name.callAsync(),
       ).then((data) => {
-        dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'totalSupply', value: data[0].toNumber() / Math.pow(10, data[3].toNumber()) })
+        /* NOTE Retrieve total supply from watching contribution events */
+        // dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'totalSupply', value: data[0].toNumber() / Math.pow(10, data[3].toNumber()) })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'symbol', value: data[1] })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'organization', value: data[2] })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'decimals', value: data[3].toNumber() })

@@ -6,9 +6,18 @@ import {
 } from 'react-bootstrap'
 import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../actions/DashboardActions'
 
-import { TokenDistributionsChart } from '../Charts/index'
-import { TokenDistributionsTable } from '../Tables/index'
-import { Header } from '../Layout/index'
+import {
+  TokenDistributionsChart,
+  GitContributionFrequencyChart
+} from '../Charts/index'
+import {
+  TokenDistributionsTable,
+  LeaderBoardTable
+} from '../Tables/index'
+import {
+  Header,
+  SideNav
+} from '../Layout/index'
 
 class DashboardComponent extends Component {
   constructor(opts) {
@@ -21,6 +30,7 @@ class DashboardComponent extends Component {
   }
 
   render() {
+    const { dispatch, dashboard: { gittoken: { showSideNav } } } = this.props
 
     return (
       <div>
@@ -30,15 +40,20 @@ class DashboardComponent extends Component {
           </Col>
         </Row>
         <Row>
-          <Col sm={2}>
-            {/*<Route exact path="/" component={Charts['TokenDistributionsChart']}/>*/}
-          </Col>
-          <Col sm={4}>
-            {/*<Route exact path="/" component={Charts['TokenDistributionsChart']}/>*/}
-          </Col>
-          <Col sm={6}>
-            <TokenDistributionsChart />
-            <TokenDistributionsTable />
+          { !showSideNav ? null :
+            <Col sm={2}>
+              <SideNav />
+            </Col>
+          }
+          <Col sm={showSideNav ? 10 : 12}>
+            <Col sm={4}>
+              <LeaderBoardTable />
+              <TokenDistributionsTable />
+            </Col>
+            <Col sm={8}>
+              <TokenDistributionsChart />
+              <GitContributionFrequencyChart />
+            </Col>
           </Col>
         </Row>
       </div>

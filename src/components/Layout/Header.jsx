@@ -10,6 +10,15 @@ class HeaderComponent extends Component {
     super(opts)
   }
 
+  toggleSideNav() {
+    const { dispatch, dashboard: { gittoken: { showSideNav } } } = this.props
+    dispatch({
+      type: 'SET_GITTOKEN_DETAILS',
+      id: 'showSideNav',
+      value: !showSideNav
+    })
+  }
+
   render() {
     const { dispatch, dashboard: { github, gittoken } } = this.props
     const { name, symbol, organization, contributorAddress } = gittoken
@@ -19,8 +28,8 @@ class HeaderComponent extends Component {
       <Row>
         <Col sm={8}>
           <div style={{ marginLeft: '25px'}}>
-            <h1>{name}
-              <small> | <a href="#"><img src={`https://img.shields.io/badge/Trade-${symbol}-brightgreen.svg`}/></a>  <a href={`https://github.com/${organization}`} target="_blank" ><img src="https://img.shields.io/badge/Status-ALPHA-orange.svg"/></a></small>
+            <h1> <a href="#" onClick={this.toggleSideNav.bind(this)}>{name}</a>
+          <small> | <a href="#"><img src={`https://img.shields.io/badge/Token-${symbol}-brightgreen.svg`}/></a>  <a href={`https://github.com/${organization}`} target="_blank" ><img src="https://img.shields.io/badge/Status-ALPHA-orange.svg"/></a> <a href="#"><img src={`https://img.shields.io/badge/${symbol}/ETH-0.00-red.svg`}/></a></small>
             </h1>
           </div>
         </Col>
