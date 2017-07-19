@@ -3,17 +3,17 @@ const INITITAL_DASHBOARD_STATE = {
   github: {
     accessToken: '',
     profile: {
-      username: 'Ryanmtate'
+      username: '' //'Ryanmtate'
     }
   },
   gittoken: {
-    contributorAddress: '0x8CB2CeBB0070b231d4BA4D3b747acAebDFbbD142',
+    contributorAddress: '', //'0x8CB2CeBB0070b231d4BA4D3b747acAebDFbbD142',
     contractAddress: '',
     contributions: {},
     contributors: {},
-    symbol: 'GTK',
-    name: 'GitToken',
-    organization: 'git-token',
+    symbol: '', //'GTK',
+    name: '', //'GitToken',
+    organization: '', //'git-token',
     totalSupply: '',
     decimals: 8,
     web3Provider: ''
