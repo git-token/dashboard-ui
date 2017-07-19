@@ -20,7 +20,7 @@ class HeaderComponent extends Component {
         <Col sm={9}>
           <h1>{name}
             <small> | {symbol} |
-              <a href={`https://github.com/${organization}`}><img href="https://img.shields.io/badge/GitHub-Active-orange.svg"/></a>
+              <a href={`https://github.com/${organization}`} target="_blank" ><img src="https://img.shields.io/badge/GitHub-Active-orange.svg"/></a>
             </small>
           </h1>
         </Col>
