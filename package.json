@@ -1,6 +1,6 @@
 {
   "name": "gittoken-dashboard",
-  "version": "0.0.59",
+  "version": "0.0.61",
   "description": "Dashboard for GitToken Contracts",
   "main": "./dist/index",
   "scripts": {
@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "github-graphql-client": "^1.0.0",
-    "gittoken-contracts": "0.0.13",
+    "gittoken-contracts": "0.0.16",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.5.4",
