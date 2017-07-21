@@ -12,7 +12,7 @@ export function initializeContract ({ contractAddress }) {
       GitToken = promisifyContract({ abi, contractAddress })
       dispatch({
         type: 'SET_GITTOKEN_DETAILS',
-        id: 'contract',
+        id: 'contractAddress',
         value: contractAddress
       })
       dispatch(getContractDetails({ contractAddress }))
@@ -61,23 +61,39 @@ export function rewardFrequency({ contributionEvent }) {
   }
 }
 
+export function reservedValue({ contributionEvent }) {
+  return (dispatch) => {
+    const { args: { reservedValue } } = contributionEvent
+    dispatch({
+      type: 'UPDATE_RESERVED_VALUE',
+      id: 'reservedValue',
+      value: reservedValue
+    })
+  }
+}
+
 export function leaderBoard({ contributionEvent }) {
   return (dispatch) => {
-    const { args: { username, value } } = contributionEvent
+    const { args: { username, value, reservedValue } } = contributionEvent
     dispatch({
       type: 'UPDATE_LEADER_BOARD',
       id: username,
       value: value.toNumber()
+    })
+    dispatch({
+      type: 'UPDATE_LEADER_BOARD',
+      id: 'Total',
+      value: Number(value.toNumber() + reservedValue.toNumber())
     })
   }
 }
 
 export function totalTokensCreated({ contributionEvent }) {
   return (dispatch) => {
-    const { args: { value } } = contributionEvent
+    const { args: { value, reservedValue } } = contributionEvent
     dispatch({
       type: 'UPDATE_TOTAL_SUPPLY',
-      value: value.toNumber()
+      value: Number(value.toNumber() + reservedValue.toNumber())
     })
   }
 }
@@ -94,9 +110,14 @@ export function getContributionEvents({ contractAddress }) {
         if (error) {
           dispatch(errorMsg(error))
         } else {
+          const { args: { date } } = result;
           dispatch(totalTokensCreated({ contributionEvent: result }))
           dispatch(leaderBoard({ contributionEvent: result }))
           dispatch(rewardFrequency({ contributionEvent: result }))
+          dispatch({
+            type: 'SET_LATEST_CONTRIBUTION',
+            value: date.toNumber()
+          })
           dispatch({
             type: 'UPDATE_GITTOKEN_CONTRIBUTION',
             id: result['transactionHash'],
@@ -119,13 +140,19 @@ export function getContractDetails({ contractAddress }) {
         GitToken.organization.callAsync(),
         GitToken.decimals.callAsync(),
         GitToken.name.callAsync(),
+        GitToken.balanceOf.callAsync(contractAddress),
       ).then((data) => {
         /* NOTE Retrieve total supply from watching contribution events */
         // dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'totalSupply', value: data[0].toNumber() / Math.pow(10, data[3].toNumber()) })
+
+        const decimals = data[3].toNumber()
+        const reservedValue = data[5].toNumber()
+
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'symbol', value: data[1] })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'organization', value: data[2] })
-        dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'decimals', value: data[3].toNumber() })
+        dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'decimals', value: decimals })
         dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'name', value: data[4] })
+        dispatch({ type: 'SET_GITTOKEN_DETAILS', id: 'reservedValue', value: reservedValue  })
       }).catch((error) => {
         dispatch(errorMsg(error))
       })

@@ -43,7 +43,7 @@ class GitContributionFrequencyChartComponent extends Component {
 
     return (
       <div style={{ marginTop: '25px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '-10px' }}>
+        <div style={{ textAlign: 'left', marginBottom: '-10px' }}>
           <h3>Frequency of Git Contributions</h3>
         </div>
         <VictoryChart
@@ -52,10 +52,7 @@ class GitContributionFrequencyChartComponent extends Component {
           height={300}
           responsive={true}
         >
-          <VictoryAxis
-            crossAxis
-            orientation={"top"}
-          />
+          <VictoryAxis />
           <VictoryGroup
             horizontal
           >

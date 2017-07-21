@@ -8,11 +8,13 @@ import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../acti
 
 import {
   TokenDistributionsChart,
-  GitContributionFrequencyChart
+  GitContributionFrequencyChart,
+  TokensVsContributionsScatterChart
 } from '../Charts/index'
 import {
   TokenDistributionsTable,
-  LeaderBoardTable
+  LeaderBoardTable,
+  TokenDetailsTable
 } from '../Tables/index'
 import {
   Header,
@@ -47,12 +49,14 @@ class DashboardComponent extends Component {
           }
           <Col sm={showSideNav ? 10 : 12}>
             <Col sm={4}>
+              <TokenDetailsTable />
+              <GitContributionFrequencyChart />
               <LeaderBoardTable />
               <TokenDistributionsTable />
             </Col>
             <Col sm={8}>
               <TokenDistributionsChart />
-              <GitContributionFrequencyChart />
+              <TokensVsContributionsScatterChart />
             </Col>
           </Col>
         </Row>

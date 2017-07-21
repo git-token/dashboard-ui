@@ -15,15 +15,28 @@ const INITITAL_DASHBOARD_STATE = {
     name: '', //'GitToken',
     organization: '', //'git-token',
     totalSupply: 0,
+    reservedValue: 0,
     decimals: 8,
     rewardFrequencies: {},
     leaderBoard: {},
-    showSideNav: false
+    numContributions: {},
+    showSideNav: false,
+    latestContribution: 0
   },
 }
 
 export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action) {
   switch(action.type) {
+    case 'SET_LATEST_CONTRIBUTION':
+      return {
+        ...state,
+        gittoken: {
+          ...state['gittoken'],
+          latestContribution:
+            action.value > state['gittoken']['latestContribution'] ?
+              action.value : state['gittoken']['latestContribution']
+        }
+      }
     case 'UPDATE_LEADER_BOARD':
       return {
         ...state,
@@ -34,7 +47,23 @@ export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action)
             [action.id]: state['gittoken']['leaderBoard'][action.id] ?
               state['gittoken']['leaderBoard'][action.id] += action.value :
               state['gittoken']['leaderBoard'][action.id] = action.value
+          },
+          numContributions: {
+            ...state['gittoken']['numContributions'],
+            [action.id]: state['gittoken']['numContributions'][action.id] ?
+              state['gittoken']['numContributions'][action.id] += 1 :
+              state['gittoken']['numContributions'][action.id] = 1
           }
+        }
+      }
+    case 'UPDATE_RESERVED_VALUE':
+      return {
+        ...state,
+        gittoken: {
+          ...state['gittoken'],
+          reservedValue: state['gittoken']['reservedValue'] ?
+            state['gittoken']['reservedValue'] += action.value :
+            state['gittoken']['reservedValue'] = action.value
         }
       }
     case 'UPDATE_TOTAL_SUPPLY':

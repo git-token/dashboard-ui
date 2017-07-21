@@ -24,10 +24,11 @@ class TokenDistributionsChartComponent extends Component {
         const d2 = new Date(contributions[b]['args']['date'].toNumber())
         return d1 - d2
       }).map((e, i) => {
-        const { args: { date, value } } = contributions[e]
+        const { args: { date, value, reservedValue } } = contributions[e]
+        const eventValue = Number((value.toNumber() + reservedValue.toNumber()) / Math.pow(10, decimals))
         return {
           x: new Date(date.toNumber() * 1000).getTime(),
-          y: parseInt(initValue += (value.toNumber() / Math.pow(10, decimals)))
+          y: Number(initValue += eventValue)
         }
       })
     }
@@ -41,7 +42,7 @@ class TokenDistributionsChartComponent extends Component {
 
     return (
       <div style={{ marginTop: '25px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '-10px' }}>
+        <div style={{ textAlign: 'left', marginBottom: '-10px' }}>
           <h3>{`Total Token Supply | ${totalSupply / Math.pow(10, decimals)} ${symbol}`}</h3>
         </div>
         <VictoryChart
