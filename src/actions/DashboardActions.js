@@ -70,7 +70,17 @@ export function retrieveConctractDetails() {
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: data })
           break;
         case 'broadcast_contribution_data':
-          console.log('broadcast_contribution_data::data', data)
+          const {
+            leaderboard,
+            totalSuppply,
+            contributionFrequency,
+            summaryStatistics,
+            tokenInflation,
+            contributionHistory
+          } = data
+          console.log('data', data)
+          dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
+          // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;
         default:
