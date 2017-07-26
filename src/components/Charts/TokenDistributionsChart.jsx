@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { VictoryLabel, VictoryChart, VictoryLine, VictoryTheme } from 'victory'
+import { VictoryLabel, VictoryChart, VictoryAxis, VictoryLine, VictoryTheme } from 'victory'
 
 
 class TokenDistributionsChartComponent extends Component {
@@ -13,22 +13,19 @@ class TokenDistributionsChartComponent extends Component {
   }
 
   parseContributions () {
-    const { dashboard: { gittoken: { contributions, decimals } } } = this.props
-    const events = Object.keys(contributions)
-
-    let initValue = 0
-
-    if (events.length) {
-      return events.sort((a, b) => {
-        const d1 = new Date(contributions[a]['args']['date'].toNumber())
-        const d2 = new Date(contributions[b]['args']['date'].toNumber())
-        return d1 - d2
-      }).map((e, i) => {
-        const { args: { date, value, reservedValue } } = contributions[e]
-        const eventValue = Number((value.toNumber() + reservedValue.toNumber()) / Math.pow(10, decimals))
-        return {
-          x: new Date(date.toNumber() * 1000).getTime(),
-          y: Number(initValue += eventValue)
+    let { dashboard: { data: { totalSupply }, gittoken: { decimals } } } = this.props
+    if (totalSupply.length) {
+      return totalSupply.map((s, i) => {
+        if (i < totalSupply.length - 1) {
+          return {
+            x: new Date(+s.date * 1000).getTime(),
+            y: Number(s.totalSupply / Math.pow(10, decimals))
+          }
+        } else {
+          return {
+            x: new Date(+s.date * 1000).getTime(),
+            y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
+          }
         }
       })
     }
@@ -42,7 +39,7 @@ class TokenDistributionsChartComponent extends Component {
 
     return (
       <div style={{ marginTop: '25px' }}>
-        <div style={{ textAlign: 'left', marginBottom: '-10px' }}>
+        <div style={{ textAlign: 'left' }}>
           <h3>{`Total Token Supply | ${totalSupply / Math.pow(10, decimals)} ${symbol}`}</h3>
         </div>
         <VictoryChart
@@ -51,6 +48,7 @@ class TokenDistributionsChartComponent extends Component {
           width={600}
           height={200}
           responsive={true}
+          padding={{ left: 60, top: 20, bottom: 50, right: 60 }}
         >
           <VictoryLine
             style={{

@@ -50896,7 +50896,7 @@ module.exports = Cancel;
 module.exports = {
   web3Provider: "https://gittoken.org/web3/",
   useMetaMask: true,
-  socketServer: 'wss://gittoken.org/ws/',
+  socketServer: 'ws://127.0.0.1:1325',
   contractAddress: '0xedc2fe67c31c2aca5cf5866b2208fe1ec113e8c8'
 };
 
@@ -67515,30 +67515,23 @@ var TokenDistributionsChartComponent = function (_Component) {
   }, {
     key: 'parseContributions',
     value: function parseContributions() {
-      var _props$dashboard$gitt = this.props.dashboard.gittoken,
-          contributions = _props$dashboard$gitt.contributions,
-          decimals = _props$dashboard$gitt.decimals;
+      var _props$dashboard = this.props.dashboard,
+          totalSupply = _props$dashboard.data.totalSupply,
+          decimals = _props$dashboard.gittoken.decimals;
 
-      var events = Object.keys(contributions);
-
-      var initValue = 0;
-
-      if (events.length) {
-        return events.sort(function (a, b) {
-          var d1 = new Date(contributions[a]['args']['date'].toNumber());
-          var d2 = new Date(contributions[b]['args']['date'].toNumber());
-          return d1 - d2;
-        }).map(function (e, i) {
-          var _contributions$e$args = contributions[e].args,
-              date = _contributions$e$args.date,
-              value = _contributions$e$args.value,
-              reservedValue = _contributions$e$args.reservedValue;
-
-          var eventValue = Number((value.toNumber() + reservedValue.toNumber()) / Math.pow(10, decimals));
-          return {
-            x: new Date(date.toNumber() * 1000).getTime(),
-            y: Number(initValue += eventValue)
-          };
+      if (totalSupply.length) {
+        return totalSupply.map(function (s, i) {
+          if (i < totalSupply.length - 1) {
+            return {
+              x: new Date(+s.date * 1000).getTime(),
+              y: Number(s.totalSupply / Math.pow(10, decimals))
+            };
+          } else {
+            return {
+              x: new Date(+s.date * 1000).getTime(),
+              y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
+            };
+          }
         });
       }
     }
@@ -67559,7 +67552,7 @@ var TokenDistributionsChartComponent = function (_Component) {
         { style: { marginTop: '25px' } },
         _react2.default.createElement(
           'div',
-          { style: { textAlign: 'left', marginBottom: '-10px' } },
+          { style: { textAlign: 'left' } },
           _react2.default.createElement(
             'h3',
             null,
@@ -67573,7 +67566,8 @@ var TokenDistributionsChartComponent = function (_Component) {
             theme: _victory.VictoryTheme.material,
             width: 600,
             height: 200,
-            responsive: true
+            responsive: true,
+            padding: { left: 60, top: 20, bottom: 50, right: 60 }
           },
           _react2.default.createElement(_victory.VictoryLine, {
             style: {
@@ -85278,30 +85272,20 @@ var GitContributionFrequencyChartComponent = function (_Component) {
   }, {
     key: 'frequencyData',
     value: function frequencyData() {
-      var rewardFrequencies = this.props.dashboard.gittoken.rewardFrequencies;
+      var contributionFrequency = this.props.dashboard.data.contributionFrequency;
 
-      if (!rewardFrequencies['total']) {
-        return [];
-      } else {
-        return Object.keys(rewardFrequencies).filter(function (f) {
-          if (f != 'total') {
-            return true;
-          }
-        }).map(function (f, i) {
-          var y = Number(rewardFrequencies[f] / rewardFrequencies['total']) * 100;
-          return { x: f, y: y };
-        });
-      }
+
+      return contributionFrequency.map(function (datum, i) {
+        var rewardType = datum.rewardType,
+            count = datum.count,
+            percentOfTotal = datum.percentOfTotal;
+
+        return { x: rewardType, y: percentOfTotal };
+      });
     }
   }, {
     key: 'render',
     value: function render() {
-      var gittoken = this.props.dashboard.gittoken;
-      var symbol = gittoken.symbol,
-          organization = gittoken.organization,
-          rewardFrequencies = gittoken.rewardFrequencies;
-
-
       var data = this.frequencyData();
 
       return _react2.default.createElement(
@@ -85405,19 +85389,23 @@ var TokensVsContributionsScatterChartComponent = function (_Component) {
   }, {
     key: 'data',
     value: function data() {
-      var gittoken = this.props.dashboard.gittoken;
-      var numContributions = gittoken.numContributions,
-          leaderBoard = gittoken.leaderBoard,
-          decimals = gittoken.decimals;
+      var _props$dashboard = this.props.dashboard,
+          leaderboard = _props$dashboard.data.leaderboard,
+          gittoken = _props$dashboard.gittoken;
+      var decimals = gittoken.decimals;
 
-      return Object.keys(leaderBoard).map(function (user) {
-        var x = Number(leaderBoard[user] / Math.pow(10, decimals));
-        var y = numContributions[user];
+      return leaderboard.map(function (ranking) {
+        var value = ranking.value,
+            numContributions = ranking.numContributions,
+            username = ranking.username;
+
+        var x = Number(value / Math.pow(10, decimals));
+        var y = numContributions;
         var d = {
           x: x,
           y: y,
           size: parseInt(x / y / 100),
-          label: user,
+          label: username,
           symbol: 'circle'
         };
         return d;
@@ -85527,54 +85515,64 @@ var TokenDistributionsTableComponent = function (_Component) {
   }, {
     key: 'contributionHistory',
     value: function contributionHistory() {
-      var _props$dashboard$gitt = this.props.dashboard.gittoken,
-          contributors = _props$dashboard$gitt.contributors,
-          contributions = _props$dashboard$gitt.contributions,
-          decimals = _props$dashboard$gitt.decimals;
+      var _props$dashboard = this.props.dashboard,
+          contributionHistory = _props$dashboard.data.contributionHistory,
+          decimals = _props$dashboard.gittoken.decimals;
 
-      var events = Object.keys(contributions);
 
-      var initValue = 0;
+      return contributionHistory.map(function (contribution, i) {
+        var username = contribution.username,
+            rewardType = contribution.rewardType,
+            value = contribution.value,
+            date = contribution.date;
 
-      if (events.length) {
-        return events.sort(function (a, b) {
-          var d1 = new Date(contributions[a]['args']['date'].toNumber());
-          var d2 = new Date(contributions[b]['args']['date'].toNumber());
-          return d2 - d1;
-        }).map(function (e, i) {
-          var _contributions$e$args = contributions[e].args,
-              contributor = _contributions$e$args.contributor,
-              username = _contributions$e$args.username,
-              date = _contributions$e$args.date,
-              value = _contributions$e$args.value,
-              rewardType = _contributions$e$args.rewardType;
+        return _react2.default.createElement(
+          'tr',
+          { key: i },
+          _react2.default.createElement(
+            'td',
+            null,
+            username
+          ),
+          _react2.default.createElement(
+            'td',
+            null,
+            rewardType
+          ),
+          _react2.default.createElement(
+            'td',
+            null,
+            value / Math.pow(10, decimals)
+          ),
+          _react2.default.createElement(
+            'td',
+            null,
+            new Date(date * 1000).toString()
+          )
+        );
+      });
 
-          return _react2.default.createElement(
-            'tr',
-            { key: i },
-            _react2.default.createElement(
-              'td',
-              null,
-              username
-            ),
-            _react2.default.createElement(
-              'td',
-              null,
-              rewardType
-            ),
-            _react2.default.createElement(
-              'td',
-              null,
-              value.toNumber() / Math.pow(10, decimals)
-            ),
-            _react2.default.createElement(
-              'td',
-              null,
-              new Date(date.toNumber() * 1000).toString()
-            )
-          );
-        });
-      }
+      // const events = Object.keys(contributions)
+      //
+      // let initValue = 0
+      //
+      // if (events.length) {
+      //   return events.sort((a, b) => {
+      //     const d1 = new Date(contributions[a]['args']['date'].toNumber())
+      //     const d2 = new Date(contributions[b]['args']['date'].toNumber())
+      //     return d2 - d1
+      //   }).map((e, i) => {
+      //     const { args: { contributor, username, date, value, rewardType } } = contributions[e]
+      // return (
+      //   <tr key={i}>
+      //     <td>{username}</td>
+      //     <td>{rewardType}</td>
+      //     <td>{value.toNumber() / Math.pow(10, decimals)}</td>
+      //     <td>{new Date(date.toNumber() * 1000).toString()}</td>
+      //   </tr>
+      // )
+      //   })
+      // }
     }
   }, {
     key: 'render',
@@ -96443,41 +96441,45 @@ var LeaderBoardTableComponent = function (_Component) {
   }, {
     key: 'leaderBoard',
     value: function leaderBoard() {
-      var _props$dashboard$gitt = this.props.dashboard.gittoken,
-          leaderBoard = _props$dashboard$gitt.leaderBoard,
+      var _props$dashboard = this.props.dashboard,
+          leaderboard = _props$dashboard.data.leaderboard,
+          _props$dashboard$gitt = _props$dashboard.gittoken,
           decimals = _props$dashboard$gitt.decimals,
-          symbol = _props$dashboard$gitt.symbol,
-          numContributions = _props$dashboard$gitt.numContributions;
+          symbol = _props$dashboard$gitt.symbol;
 
-      return Object.keys(leaderBoard).sort(function (a, b) {
-        return leaderBoard[b] - leaderBoard[a];
-      }).map(function (user, i) {
-        var tokensCreated = Number(leaderBoard[user] / Math.pow(10, decimals));
-        var nContributed = numContributions[user];
+
+      return leaderboard.map(function (ranking, i) {
+        var username = ranking.username,
+            contributorAddress = ranking.contributorAddress,
+            value = ranking.value,
+            latestContribution = ranking.latestContribution,
+            numContributions = ranking.numContributions,
+            valuePerContribution = ranking.valuePerContribution;
+
         return _react2.default.createElement(
           'tr',
           { key: i },
           _react2.default.createElement(
             'td',
             null,
-            user
+            username
           ),
           _react2.default.createElement(
             'td',
             null,
-            tokensCreated.toLocaleString(),
+            Number(value / Math.pow(10, decimals)).toLocaleString(),
             ' ',
             symbol
           ),
           _react2.default.createElement(
             'td',
             null,
-            nContributed
+            numContributions
           ),
           _react2.default.createElement(
             'td',
             null,
-            Number(tokensCreated / nContributed).toLocaleString()
+            Number(valuePerContribution / Math.pow(10, decimals)).toLocaleString()
           )
         );
       });
@@ -96604,15 +96606,22 @@ var TokenDetailsTableComponent = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var gittoken = this.props.dashboard.gittoken;
-      var name = gittoken.name,
-          organization = gittoken.organization,
-          decimals = gittoken.decimals,
-          symbol = gittoken.symbol,
-          totalSupply = gittoken.totalSupply,
-          contractAddress = gittoken.contractAddress,
-          reservedValue = gittoken.reservedValue,
-          latestContribution = gittoken.latestContribution;
+      var _props$dashboard = this.props.dashboard,
+          summaryStatistics = _props$dashboard.data.summaryStatistics,
+          decimals = _props$dashboard.gittoken.decimals;
+
+      console.log('summaryStatistics', summaryStatistics);
+      var githubOrganization = summaryStatistics.githubOrganization,
+          contractAddress = summaryStatistics.contractAddress,
+          tokenName = summaryStatistics.tokenName,
+          tokenSymbol = summaryStatistics.tokenSymbol,
+          latestContribution = summaryStatistics.latestContribution,
+          tokenSupply = summaryStatistics.tokenSupply,
+          reservedSupply = summaryStatistics.reservedSupply,
+          percentReserved = summaryStatistics.percentReserved,
+          tokenInflation = summaryStatistics.tokenInflation,
+          totalContributions = summaryStatistics.totalContributions,
+          uniqueContributions = summaryStatistics.uniqueContributions;
 
 
       var daysSinceContribution = Number((new Date().getTime() - new Date(latestContribution * 1000).getTime()) / 864e5).toLocaleString();
@@ -96665,8 +96674,8 @@ var TokenDetailsTableComponent = function (_Component) {
                   null,
                   _react2.default.createElement(
                     'a',
-                    { href: 'https://github.com/' + organization, target: "_blank" },
-                    organization
+                    { href: 'https://github.com/' + githubOrganization, target: "_blank" },
+                    githubOrganization
                   )
                 )
               ),
@@ -96681,7 +96690,7 @@ var TokenDetailsTableComponent = function (_Component) {
                 _react2.default.createElement(
                   'td',
                   null,
-                  name
+                  tokenName
                 )
               ),
               _react2.default.createElement(
@@ -96695,7 +96704,7 @@ var TokenDetailsTableComponent = function (_Component) {
                 _react2.default.createElement(
                   'td',
                   null,
-                  symbol
+                  tokenSymbol
                 )
               ),
               _react2.default.createElement(
@@ -96709,7 +96718,7 @@ var TokenDetailsTableComponent = function (_Component) {
                 _react2.default.createElement(
                   'td',
                   null,
-                  Number(totalSupply / Math.pow(10, decimals)).toLocaleString()
+                  Number(tokenSupply / Math.pow(10, decimals)).toLocaleString()
                 )
               ),
               _react2.default.createElement(
@@ -96723,7 +96732,7 @@ var TokenDetailsTableComponent = function (_Component) {
                 _react2.default.createElement(
                   'td',
                   null,
-                  Number(reservedValue / Math.pow(10, decimals)).toLocaleString(),
+                  Number(reservedSupply / Math.pow(10, decimals)).toLocaleString(),
                   ' ',
                   _react2.default.createElement(
                     'small',
@@ -96743,7 +96752,7 @@ var TokenDetailsTableComponent = function (_Component) {
                 _react2.default.createElement(
                   'td',
                   null,
-                  Number(reservedValue / totalSupply * 100).toLocaleString(),
+                  Number(reservedSupply / tokenSupply * 100).toLocaleString(),
                   ' %'
                 )
               ),
@@ -97173,7 +97182,7 @@ function loadWeb3() {
       if (!web3 || !web3.eth || !web3.currentProvider) {
         dispatch(loadWeb3());
       } else {
-        dispatch(authenticateGitHubUser());
+        // dispatch(authenticateGitHubUser())
         dispatch(ConnectToWebSocket());
       }
       return null;
@@ -97201,14 +97210,40 @@ function ConnectToWebSocket() {
 
 function retrieveConctractDetails() {
   return function (dispatch) {
-    SocketClient.send(JSON.stringify({ event: 'contractDetails' }));
+    SocketClient.send(JSON.stringify({ event: 'analytics' }));
 
     SocketClient.onmessage = function (e) {
       var _JSON$parse2 = JSON.parse(e.data),
-          contractAddress = _JSON$parse2.txReceipt.contractAddress;
+          event = _JSON$parse2.event,
+          data = _JSON$parse2.data;
 
-      console.log('contractAddress', contractAddress);
-      dispatch((0, _ContractActions.initializeContract)({ contractAddress: contractAddress }));
+      switch (event) {
+        case 'get_totalSupply':
+          dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data });
+          break;
+        case 'get_leaderboard':
+          dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data });
+          break;
+        case 'get_contributions':
+          dispatch({ type: 'INIT_DATA', id: "contributionHistory", value: data });
+          break;
+        case 'get_contribution_frequency':
+          dispatch({ type: 'INIT_DATA', id: "contributionFrequency", value: data });
+          break;
+        case 'get_token_inflation':
+          dispatch({ type: 'INIT_DATA', id: "tokenInflation", value: data });
+          break;
+        case 'get_summary_statistics':
+          // console.log('get_summary_statistics::data', data)
+          dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: data });
+          break;
+        case 'broadcast_contribution_data':
+          console.log('broadcast_contribution_data::data', data);
+          // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
+          break;
+        default:
+          alert('Incoming Unhandled Event: ' + event);
+      }
     };
   };
 }
@@ -99042,6 +99077,14 @@ var INITITAL_DASHBOARD_STATE = {
     numContributions: {},
     showSideNav: false,
     latestContribution: 0
+  },
+  data: {
+    totalSupply: [],
+    contributionHistory: [],
+    leaderboard: [],
+    contributionFrequency: [],
+    tokenInflation: [],
+    summaryStatistics: {}
   }
 };
 
@@ -99050,6 +99093,10 @@ function DashboardReducer() {
   var action = arguments[1];
 
   switch (action.type) {
+    case 'INIT_DATA':
+      return _extends({}, state, {
+        data: _extends({}, state['data'], _defineProperty({}, action.id, action.value))
+      });
     case 'SET_LATEST_CONTRIBUTION':
       return _extends({}, state, {
         gittoken: _extends({}, state['gittoken'], {

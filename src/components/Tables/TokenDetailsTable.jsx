@@ -15,17 +15,21 @@ class TokenDetailsTableComponent extends Component {
   }
 
   render() {
-    const { dashboard: { gittoken } } = this.props
+    const { dashboard: { data: { summaryStatistics }, gittoken: { decimals } } } = this.props
+    console.log('summaryStatistics', summaryStatistics)
     const {
-      name,
-      organization,
-      decimals,
-      symbol,
-      totalSupply,
+      githubOrganization,
       contractAddress,
-      reservedValue,
-      latestContribution
-    } = gittoken
+      tokenName,
+      tokenSymbol,
+      latestContribution,
+      tokenSupply,
+      reservedSupply,
+      percentReserved,
+      tokenInflation,
+      totalContributions,
+      uniqueContributions
+    } = summaryStatistics
 
     const daysSinceContribution = Number(
       (new Date().getTime() - new Date(latestContribution * 1000).getTime())  / (864e5)
@@ -45,27 +49,27 @@ class TokenDetailsTableComponent extends Component {
               </tr>
               <tr >
                 <td>GitHub Organization</td>
-                <td><a href={`https://github.com/${organization}`} target={"_blank"}>{organization}</a></td>
+              <td><a href={`https://github.com/${githubOrganization}`} target={"_blank"}>{githubOrganization}</a></td>
               </tr>
               <tr >
                 <td>Token Name</td>
-                <td>{name}</td>
+              <td>{tokenName}</td>
               </tr>
               <tr >
                 <td>Token Symbol</td>
-                <td>{symbol}</td>
+              <td>{tokenSymbol}</td>
               </tr>
               <tr >
                 <td>Token Supply</td>
-                <td>{Number(totalSupply / Math.pow(10, decimals)).toLocaleString()}</td>
+                <td>{Number(tokenSupply / Math.pow(10, decimals)).toLocaleString()}</td>
               </tr>
               <tr >
                 <td>Reserved Supply</td>
-                <td>{Number(reservedValue / Math.pow(10, decimals)).toLocaleString()} <small>| Token supply held by the contract for auction</small></td>
+                <td>{Number(reservedSupply / Math.pow(10, decimals)).toLocaleString()} <small>| Token supply held by the contract for auction</small></td>
               </tr>
               <tr >
                 <td>Percent Reserved for Auction</td>
-                <td>{Number((reservedValue / totalSupply) * 100).toLocaleString()} %</td>
+                <td>{Number((reservedSupply / tokenSupply) * 100).toLocaleString()} %</td>
               </tr>
               <tr >
                 <td>Days Since Last Contribution</td>

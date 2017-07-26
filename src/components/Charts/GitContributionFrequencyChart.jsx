@@ -20,25 +20,15 @@ class GitContributionFrequencyChartComponent extends Component {
   }
 
   frequencyData () {
-    const { dashboard: { gittoken: { rewardFrequencies } } } = this.props
-    if (!rewardFrequencies['total']) {
-      return []
-    } else {
-      return Object.keys(rewardFrequencies).filter((f) => {
-        if (f != 'total') {
-          return true
-        }
-      }).map((f, i) => {
-        let y = Number(rewardFrequencies[f] / rewardFrequencies['total']) * 100
-        return { x: f, y }
-      })
-    }
+    const { dashboard: { data: { contributionFrequency } } } = this.props
+
+    return contributionFrequency.map((datum, i) => {
+      const { rewardType, count, percentOfTotal } = datum
+      return { x: rewardType, y: percentOfTotal }
+    })
   }
 
   render() {
-    const { dashboard: { gittoken } } = this.props
-    const { symbol, organization, rewardFrequencies } = gittoken
-
     const data = this.frequencyData()
 
     return (

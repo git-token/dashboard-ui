@@ -15,18 +15,16 @@ class LeaderBoardTableComponent extends Component {
   }
 
   leaderBoard () {
-    const { dashboard: { gittoken: { leaderBoard, decimals, symbol, numContributions } } } = this.props
-    return Object.keys(leaderBoard).sort((a, b) => {
-      return leaderBoard[b] - leaderBoard[a]
-    }).map((user, i) => {
-      const tokensCreated = Number(leaderBoard[user] / Math.pow(10, decimals ));
-      const nContributed = numContributions[user]
+    const { dashboard: { data: { leaderboard }, gittoken: { decimals, symbol } } } = this.props
+
+    return leaderboard.map((ranking, i) => {
+      const { username, contributorAddress, value, latestContribution, numContributions, valuePerContribution } = ranking;
       return (
         <tr key={i}>
-          <td>{user}</td>
-          <td>{tokensCreated.toLocaleString()} {symbol}</td>
-          <td>{nContributed}</td>
-          <td>{Number(tokensCreated / nContributed).toLocaleString()}</td>
+          <td>{username}</td>
+          <td>{Number(value / Math.pow(10, decimals)).toLocaleString()} {symbol}</td>
+          <td>{numContributions}</td>
+          <td>{Number(valuePerContribution / Math.pow(10, decimals)).toLocaleString()}</td>
         </tr>
       )
     })

@@ -17,7 +17,7 @@ export function loadWeb3() {
       if(!web3 || !web3.eth || !web3.currentProvider) {
         dispatch(loadWeb3())
       } else {
-        dispatch(authenticateGitHubUser())
+        // dispatch(authenticateGitHubUser())
         dispatch(ConnectToWebSocket())
       }
       return null;
@@ -45,12 +45,37 @@ export function ConnectToWebSocket () {
 
 export function retrieveConctractDetails() {
   return (dispatch) => {
-    SocketClient.send(JSON.stringify({ event: 'contractDetails' }))
+    SocketClient.send(JSON.stringify({ event: 'analytics' }))
 
     SocketClient.onmessage = (e) => {
-      const { txReceipt: { contractAddress } } = JSON.parse(e.data)
-      console.log('contractAddress', contractAddress)
-      dispatch(initializeContract({ contractAddress }))
+      const { event, data} = JSON.parse(e.data)
+      switch(event) {
+        case 'get_totalSupply':
+          dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data })
+          break;
+        case 'get_leaderboard':
+          dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data })
+          break;
+        case 'get_contributions':
+          dispatch({ type: 'INIT_DATA', id: "contributionHistory", value: data })
+          break;
+        case 'get_contribution_frequency':
+          dispatch({ type: 'INIT_DATA', id: "contributionFrequency", value: data })
+          break;
+        case 'get_token_inflation':
+          dispatch({ type: 'INIT_DATA', id: "tokenInflation", value: data })
+          break;
+        case 'get_summary_statistics':
+          // console.log('get_summary_statistics::data', data)
+          dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: data })
+          break;
+        case 'broadcast_contribution_data':
+          console.log('broadcast_contribution_data::data', data)
+          // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
+          break;
+        default:
+          alert(`Incoming Unhandled Event: ${event}`)
+      }
     }
   }
 }

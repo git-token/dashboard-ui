@@ -15,28 +15,41 @@ class TokenDistributionsTableComponent extends Component {
   }
 
   contributionHistory () {
-    const { dashboard: { gittoken: { contributors, contributions, decimals } } } = this.props
-    const events = Object.keys(contributions)
+    const { dashboard: { data: { contributionHistory }, gittoken: {  decimals } } } = this.props
 
-    let initValue = 0
+    return contributionHistory.map((contribution, i) => {
+      const { username, rewardType, value, date } = contribution
+      return (
+        <tr key={i}>
+          <td>{username}</td>
+          <td>{rewardType}</td>
+          <td>{value / Math.pow(10, decimals)}</td>
+          <td>{new Date(date * 1000).toString()}</td>
+        </tr>
+      )
+    })
 
-    if (events.length) {
-      return events.sort((a, b) => {
-        const d1 = new Date(contributions[a]['args']['date'].toNumber())
-        const d2 = new Date(contributions[b]['args']['date'].toNumber())
-        return d2 - d1
-      }).map((e, i) => {
-        const { args: { contributor, username, date, value, rewardType } } = contributions[e]
-        return (
-          <tr key={i}>
-            <td>{username}</td>
-            <td>{rewardType}</td>
-            <td>{value.toNumber() / Math.pow(10, decimals)}</td>
-            <td>{new Date(date.toNumber() * 1000).toString()}</td>
-          </tr>
-        )
-      })
-    }
+    // const events = Object.keys(contributions)
+    //
+    // let initValue = 0
+    //
+    // if (events.length) {
+    //   return events.sort((a, b) => {
+    //     const d1 = new Date(contributions[a]['args']['date'].toNumber())
+    //     const d2 = new Date(contributions[b]['args']['date'].toNumber())
+    //     return d2 - d1
+    //   }).map((e, i) => {
+    //     const { args: { contributor, username, date, value, rewardType } } = contributions[e]
+        // return (
+        //   <tr key={i}>
+        //     <td>{username}</td>
+        //     <td>{rewardType}</td>
+        //     <td>{value.toNumber() / Math.pow(10, decimals)}</td>
+        //     <td>{new Date(date.toNumber() * 1000).toString()}</td>
+        //   </tr>
+        // )
+    //   })
+    // }
   }
 
   render() {
