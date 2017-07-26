@@ -18,7 +18,8 @@ import {
 } from '../Tables/index'
 import {
   Header,
-  SideNav
+  SideNav,
+  Message
 } from '../Layout/index'
 
 class DashboardComponent extends Component {
@@ -38,6 +39,7 @@ class DashboardComponent extends Component {
       <div>
         <Row>
           <Col sm={12}>
+            <Message />
             <Header />
           </Col>
         </Row>

@@ -16,7 +16,6 @@ class TokenDetailsTableComponent extends Component {
 
   render() {
     const { dashboard: { data: { summaryStatistics }, gittoken: { decimals } } } = this.props
-    console.log('summaryStatistics', summaryStatistics)
     const {
       githubOrganization,
       contractAddress,

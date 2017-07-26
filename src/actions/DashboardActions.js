@@ -52,7 +52,6 @@ export function updateLeaderboard({ ranking }) {
 
 export function initLeaderboard({ leaderboard }) {
   return (dispatch) => {
-    console.log('leaderboard', leaderboard)
     Promise.resolve(leaderboard).map((ranking) => {
       dispatch(updateLeaderboard({ ranking }))
     }).catch((error) => {
@@ -99,8 +98,9 @@ export function retrieveConctractDetails() {
             contributionHistory
           } = data
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
-          dispatch(updateLeaderboard({ ranking: leaderboard }))
-          dispatch({ type: 'UPDATE_TOTAL_SUPPLY', value: totalSupply })
+          dispatch(initLeaderboard({ leaderboard }))
+          dispatch({ type: 'UPDATE_DATA', id: 'totalSupply', value: totalSupply })
+          dispatch({ type: 'UPDATE_DATA', id: 'contributionHistory', value: contributionHistory })
           // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;

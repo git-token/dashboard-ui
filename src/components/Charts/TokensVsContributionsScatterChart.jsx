@@ -41,8 +41,6 @@ class TokensVsContributionsScatterChartComponent extends Component {
 
     const data = this.data()
 
-    console.log('data', data)
-
     return (
       <div style={{ marginTop: '25px' }}>
         <div style={{ textAlign: 'left', marginBottom: '-10px' }}>

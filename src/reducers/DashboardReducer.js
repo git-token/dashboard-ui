@@ -31,13 +31,13 @@ export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action)
           [action.id]: action.value
         }
       }
-    case 'UPDATE_TOTAL_SUPPLY':
+    case 'UPDATE_DATA':
       return {
         ...state,
         data: {
           ...state['data'],
-          totalSupply: [
-            ...state['data']['totalSupply'],
+          [action.id]: [
+            ...state['data'][action.id],
             action.value
           ]
         }
