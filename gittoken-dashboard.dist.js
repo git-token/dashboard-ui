@@ -67521,29 +67521,33 @@ var TokenDistributionsChartComponent = function (_Component) {
 
       if (totalSupply.length) {
         return totalSupply.map(function (s, i) {
-          if (i < totalSupply.length - 1) {
-            return {
-              x: new Date(+s.date * 1000).getTime(),
-              y: Number(s.totalSupply / Math.pow(10, decimals))
-            };
-          } else {
-            return {
-              x: new Date(+s.date * 1000).getTime(),
-              y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
-            };
-          }
+          console.log('s', s);
+          return {
+            x: new Date(+s.date * 1000).getTime(),
+            y: Number(s.totalSupply / Math.pow(10, decimals))
+            // if (i < totalSupply.length - 1) {
+            //   return {
+            //     x: new Date(+s.date * 1000).getTime(),
+            //     y: Number(s.totalSupply / Math.pow(10, decimals))
+            //   }
+            // } else {
+            //   return {
+            //     x: new Date(+s.date * 1000).getTime(),
+            //     y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
+            //   }
+            // }
+          };
         });
       }
     }
   }, {
     key: 'render',
     value: function render() {
-      var gittoken = this.props.dashboard.gittoken;
-      var symbol = gittoken.symbol,
-          organization = gittoken.organization,
-          totalSupply = gittoken.totalSupply,
-          decimals = gittoken.decimals;
-
+      var _props$dashboard2 = this.props.dashboard,
+          summaryStatistics = _props$dashboard2.data.summaryStatistics,
+          decimals = _props$dashboard2.gittoken.decimals;
+      var tokenSupply = summaryStatistics.tokenSupply,
+          tokenSymbol = summaryStatistics.tokenSymbol;
 
       var data = this.parseContributions();
 
@@ -67556,7 +67560,7 @@ var TokenDistributionsChartComponent = function (_Component) {
           _react2.default.createElement(
             'h3',
             null,
-            'Total Token Supply | ' + totalSupply / Math.pow(10, decimals) + ' ' + symbol
+            'Total Token Supply | ' + Number(tokenSupply / Math.pow(10, decimals)).toLocaleString() + ' ' + tokenSymbol
           )
         ),
         _react2.default.createElement(
@@ -96852,12 +96856,13 @@ var HeaderComponent = function (_Component) {
       var _props2 = this.props,
           dispatch = _props2.dispatch,
           _props2$dashboard = _props2.dashboard,
+          summaryStatistics = _props2$dashboard.data.summaryStatistics,
           github = _props2$dashboard.github,
           gittoken = _props2$dashboard.gittoken;
-      var name = gittoken.name,
-          symbol = gittoken.symbol,
-          organization = gittoken.organization,
-          contributorAddress = gittoken.contributorAddress;
+      var tokenName = summaryStatistics.tokenName,
+          tokenSymbol = summaryStatistics.tokenSymbol,
+          githubOrganization = summaryStatistics.githubOrganization;
+      var contributorAddress = gittoken.contributorAddress;
       var username = github.profile.username;
 
 
@@ -96877,7 +96882,7 @@ var HeaderComponent = function (_Component) {
               _react2.default.createElement(
                 'a',
                 { href: '#', onClick: this.toggleSideNav.bind(this) },
-                name
+                tokenName
               ),
               _react2.default.createElement(
                 'small',
@@ -96886,19 +96891,19 @@ var HeaderComponent = function (_Component) {
                 _react2.default.createElement(
                   'a',
                   { href: '#' },
-                  _react2.default.createElement('img', { src: 'https://img.shields.io/badge/Token-' + symbol + '-brightgreen.svg' })
+                  _react2.default.createElement('img', { src: 'https://img.shields.io/badge/Token-' + tokenSymbol + '-brightgreen.svg' })
                 ),
                 '  ',
                 _react2.default.createElement(
                   'a',
-                  { href: 'https://github.com/' + organization, target: '_blank' },
+                  { href: 'https://github.com/' + githubOrganization, target: '_blank' },
                   _react2.default.createElement('img', { src: 'https://img.shields.io/badge/Status-ALPHA-orange.svg' })
                 ),
                 ' ',
                 _react2.default.createElement(
                   'a',
                   { href: '#' },
-                  _react2.default.createElement('img', { src: 'https://img.shields.io/badge/' + symbol + '/ETH-0.00-red.svg' })
+                  _react2.default.createElement('img', { src: 'https://img.shields.io/badge/' + tokenSymbol + '/ETH-0.00-red.svg' })
                 )
               )
             )
@@ -96907,7 +96912,7 @@ var HeaderComponent = function (_Component) {
         _react2.default.createElement(
           _reactBootstrap.Col,
           { sm: 4 },
-          _react2.default.createElement(
+          username && contributorAddress ? _react2.default.createElement(
             'div',
             { style: { marginTop: '10px' } },
             _react2.default.createElement(
@@ -96918,7 +96923,7 @@ var HeaderComponent = function (_Component) {
               ' | ',
               contributorAddress
             )
-          )
+          ) : null
         )
       );
     }
@@ -97266,8 +97271,9 @@ function retrieveConctractDetails() {
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: data });
           break;
         case 'broadcast_contribution_data':
+          console.log('broadcast_contribution_data', data);
           var leaderboard = data.leaderboard,
-              totalSuppply = data.totalSuppply,
+              totalSupply = data.totalSupply,
               contributionFrequency = data.contributionFrequency,
               summaryStatistics = data.summaryStatistics,
               tokenInflation = data.tokenInflation,
@@ -97275,6 +97281,7 @@ function retrieveConctractDetails() {
 
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics });
           dispatch(updateLeaderboard({ ranking: leaderboard }));
+          dispatch({ type: 'UPDATE_TOTAL_SUPPLY', value: totalSupply });
           // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;
@@ -99088,6 +99095,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = DashboardReducer;
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var INITITAL_DASHBOARD_STATE = {
@@ -99099,21 +99108,9 @@ var INITITAL_DASHBOARD_STATE = {
     }
   },
   gittoken: {
-    contributorAddress: '', //'0x8CB2CeBB0070b231d4BA4D3b747acAebDFbbD142',
-    contractAddress: '',
-    contributions: {},
-    contributors: {},
-    symbol: '', //'GTK',
-    name: '', //'GitToken',
-    organization: '', //'git-token',
-    totalSupply: 0,
-    reservedValue: 0,
+    contributorAddress: '',
     decimals: 8,
-    rewardFrequencies: {},
-    leaderBoard: {},
-    numContributions: {},
-    showSideNav: false,
-    latestContribution: 0
+    showSideNav: false
   },
   data: {
     totalSupply: [],
@@ -99134,62 +99131,17 @@ function DashboardReducer() {
       return _extends({}, state, {
         data: _extends({}, state['data'], _defineProperty({}, action.id, action.value))
       });
+    case 'UPDATE_TOTAL_SUPPLY':
+      return _extends({}, state, {
+        data: _extends({}, state['data'], {
+          totalSupply: [].concat(_toConsumableArray(state['data']['totalSupply']), [action.value])
+        })
+      });
     case 'SET_LEADERBOARD_DATA':
       return _extends({}, state, {
         data: _extends({}, state['data'], {
           leaderboard: _extends({}, state['data']['leaderboard'], _defineProperty({}, action.id, action.value))
         })
-      });
-    case 'SET_LATEST_CONTRIBUTION':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], {
-          latestContribution: action.value > state['gittoken']['latestContribution'] ? action.value : state['gittoken']['latestContribution']
-        })
-      });
-    case 'UPDATE_LEADER_BOARD':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], {
-          leaderBoard: _extends({}, state['gittoken']['leaderBoard'], _defineProperty({}, action.id, state['gittoken']['leaderBoard'][action.id] ? state['gittoken']['leaderBoard'][action.id] += action.value : state['gittoken']['leaderBoard'][action.id] = action.value)),
-          numContributions: _extends({}, state['gittoken']['numContributions'], _defineProperty({}, action.id, state['gittoken']['numContributions'][action.id] ? state['gittoken']['numContributions'][action.id] += 1 : state['gittoken']['numContributions'][action.id] = 1))
-        })
-      });
-    case 'UPDATE_RESERVED_VALUE':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], {
-          reservedValue: state['gittoken']['reservedValue'] ? state['gittoken']['reservedValue'] += action.value : state['gittoken']['reservedValue'] = action.value
-        })
-      });
-    case 'UPDATE_TOTAL_SUPPLY':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], {
-          totalSupply: state['gittoken']['totalSupply'] ? state['gittoken']['totalSupply'] += action.value : state['gittoken']['totalSupply'] = action.value
-        })
-      });
-    case 'UPDATE_CONTRIBUTION_FREQUENCY':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], {
-          rewardFrequencies: _extends({}, state['gittoken']['rewardFrequencies'], _defineProperty({}, action.id, state['gittoken']['rewardFrequencies'][action.id] ? state['gittoken']['rewardFrequencies'][action.id] += 1 : state['gittoken']['rewardFrequencies'][action.id] = 1))
-        })
-      });
-    case 'UPDATE_GITTOKEN_CONTRIBUTION':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], {
-          contributions: _extends({}, state['gittoken']['contributions'], _defineProperty({}, action.id, action.value))
-        })
-      });
-    case 'UPDATE_GITTOKEN_CONTRIBUTORS':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], {
-          contributors: _extends({}, state['gittoken']['contributors'], _defineProperty({}, action.id, action.value))
-        })
-      });
-    case 'SET_GITTOKEN_DETAILS':
-      return _extends({}, state, {
-        gittoken: _extends({}, state['gittoken'], _defineProperty({}, action.id, action.value))
-      });
-    case 'SET_GITHUB_DETAILS':
-      return _extends({}, state, {
-        github: _extends({}, state['github'], _defineProperty({}, action.id, action.value))
       });
     default:
       return state;

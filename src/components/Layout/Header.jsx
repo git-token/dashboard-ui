@@ -20,23 +20,27 @@ class HeaderComponent extends Component {
   }
 
   render() {
-    const { dispatch, dashboard: { github, gittoken } } = this.props
-    const { name, symbol, organization, contributorAddress } = gittoken
+    const { dispatch, dashboard: { data: { summaryStatistics }, github, gittoken } } = this.props
+    const { tokenName, tokenSymbol, githubOrganization } = summaryStatistics
+    const { contributorAddress } = gittoken
     const { profile: { username } } = github
 
     return (
       <Row>
         <Col sm={8}>
           <div style={{ marginLeft: '25px'}}>
-            <h1> <a href="#" onClick={this.toggleSideNav.bind(this)}>{name}</a>
-          <small> | <a href="#"><img src={`https://img.shields.io/badge/Token-${symbol}-brightgreen.svg`}/></a>  <a href={`https://github.com/${organization}`} target="_blank" ><img src="https://img.shields.io/badge/Status-ALPHA-orange.svg"/></a> <a href="#"><img src={`https://img.shields.io/badge/${symbol}/ETH-0.00-red.svg`}/></a></small>
+            <h1> <a href="#" onClick={this.toggleSideNav.bind(this)}>{tokenName}</a>
+          <small> | <a href="#"><img src={`https://img.shields.io/badge/Token-${tokenSymbol}-brightgreen.svg`}/></a>  <a href={`https://github.com/${githubOrganization}`} target="_blank" ><img src="https://img.shields.io/badge/Status-ALPHA-orange.svg"/></a> <a href="#"><img src={`https://img.shields.io/badge/${tokenSymbol}/ETH-0.00-red.svg`}/></a></small>
             </h1>
           </div>
         </Col>
         <Col sm={4}>
-          <div style={{ marginTop: '10px' }}>
-            <small>Logged In as {username} | {contributorAddress}</small>
-          </div>
+          { username && contributorAddress ?
+            <div style={{ marginTop: '10px' }}>
+              <small>Logged In as {username} | {contributorAddress}</small>
+            </div> :
+            null
+          }
         </Col>
       </Row>
     )

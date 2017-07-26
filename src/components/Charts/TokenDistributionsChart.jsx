@@ -16,31 +16,35 @@ class TokenDistributionsChartComponent extends Component {
     let { dashboard: { data: { totalSupply }, gittoken: { decimals } } } = this.props
     if (totalSupply.length) {
       return totalSupply.map((s, i) => {
-        if (i < totalSupply.length - 1) {
-          return {
-            x: new Date(+s.date * 1000).getTime(),
-            y: Number(s.totalSupply / Math.pow(10, decimals))
-          }
-        } else {
-          return {
-            x: new Date(+s.date * 1000).getTime(),
-            y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
-          }
+        console.log('s', s)
+        return {
+          x: new Date(+s.date * 1000).getTime(),
+          y: Number(s.totalSupply / Math.pow(10, decimals))
         }
+        // if (i < totalSupply.length - 1) {
+        //   return {
+        //     x: new Date(+s.date * 1000).getTime(),
+        //     y: Number(s.totalSupply / Math.pow(10, decimals))
+        //   }
+        // } else {
+        //   return {
+        //     x: new Date(+s.date * 1000).getTime(),
+        //     y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
+        //   }
+        // }
       })
     }
   }
 
   render() {
-    const { dashboard: { gittoken } } = this.props
-    const { symbol, organization, totalSupply, decimals } = gittoken
-
+    const { dashboard: { data: { summaryStatistics }, gittoken: { decimals } } } = this.props
+    const { tokenSupply, tokenSymbol } = summaryStatistics
     const data = this.parseContributions()
 
     return (
       <div style={{ marginTop: '25px' }}>
         <div style={{ textAlign: 'left' }}>
-          <h3>{`Total Token Supply | ${totalSupply / Math.pow(10, decimals)} ${symbol}`}</h3>
+          <h3>{`Total Token Supply | ${Number(tokenSupply / Math.pow(10, decimals)).toLocaleString()} ${tokenSymbol}`}</h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}

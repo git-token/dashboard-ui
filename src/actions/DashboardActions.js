@@ -89,9 +89,10 @@ export function retrieveConctractDetails() {
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: data })
           break;
         case 'broadcast_contribution_data':
+          console.log('broadcast_contribution_data', data)
           const {
             leaderboard,
-            totalSuppply,
+            totalSupply,
             contributionFrequency,
             summaryStatistics,
             tokenInflation,
@@ -99,6 +100,7 @@ export function retrieveConctractDetails() {
           } = data
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           dispatch(updateLeaderboard({ ranking: leaderboard }))
+          dispatch({ type: 'UPDATE_TOTAL_SUPPLY', value: totalSupply })
           // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;
