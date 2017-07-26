@@ -16,7 +16,7 @@ class TokenDistributionsChartComponent extends Component {
     let { dashboard: { data: { totalSupply }, gittoken: { decimals } } } = this.props
     if (totalSupply.length) {
       return totalSupply.filter((s, i) => {
-        if (i > 0 && s.totalSupply > totalSupply[i-1].totalSupply) {
+        if (s && i > 0 && s.totalSupply > totalSupply[i-1].totalSupply) {
           return true
         }
       }).map((s, i) => {

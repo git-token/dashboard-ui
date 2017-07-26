@@ -67521,7 +67521,7 @@ var TokenDistributionsChartComponent = function (_Component) {
 
       if (totalSupply.length) {
         return totalSupply.filter(function (s, i) {
-          if (i > 0 && s.totalSupply > totalSupply[i - 1].totalSupply) {
+          if (s && i > 0 && s.totalSupply > totalSupply[i - 1].totalSupply) {
             return true;
           }
         }).map(function (s, i) {
