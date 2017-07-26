@@ -26,7 +26,7 @@ const INITITAL_DASHBOARD_STATE = {
   data: {
     totalSupply: [],
     contributionHistory: [],
-    leaderboard: [],
+    leaderboard: {},
     contributionFrequency: [],
     tokenInflation: [],
     summaryStatistics: {}
@@ -41,6 +41,17 @@ export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action)
         data: {
           ...state['data'],
           [action.id]: action.value
+        }
+      }
+    case 'SET_LEADERBOARD_DATA':
+      return {
+        ...state,
+        data: {
+          ...state['data'],
+          leaderboard: {
+            ...state['data']['leaderboard'],
+            [action.id]: action.value
+          }
         }
       }
     case 'SET_LATEST_CONTRIBUTION':

@@ -43,6 +43,24 @@ export function ConnectToWebSocket () {
   }
 }
 
+export function updateLeaderboard({ ranking }) {
+  return (dispatch) => {
+    const { username } = ranking
+    dispatch({ type: 'SET_LEADERBOARD_DATA', id: username, value: ranking })
+  }
+}
+
+export function initLeaderboard({ leaderboard }) {
+  return (dispatch) => {
+    console.log('leaderboard', leaderboard)
+    Promise.resolve(leaderboard).map((ranking) => {
+      dispatch(updateLeaderboard({ ranking }))
+    }).catch((error) => {
+      console.log('initLeaderboard::error', error)
+    })
+  }
+}
+
 export function retrieveConctractDetails() {
   return (dispatch) => {
     SocketClient.send(JSON.stringify({ event: 'analytics' }))
@@ -54,7 +72,8 @@ export function retrieveConctractDetails() {
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data })
           break;
         case 'get_leaderboard':
-          dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data })
+          // dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data })
+          dispatch(initLeaderboard({ leaderboard: data }))
           break;
         case 'get_contributions':
           dispatch({ type: 'INIT_DATA', id: "contributionHistory", value: data })
@@ -78,8 +97,8 @@ export function retrieveConctractDetails() {
             tokenInflation,
             contributionHistory
           } = data
-          console.log('data', data)
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
+          dispatch(updateLeaderboard({ ranking: leaderboard }))
           // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;

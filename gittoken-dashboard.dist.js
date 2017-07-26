@@ -85394,10 +85394,11 @@ var TokensVsContributionsScatterChartComponent = function (_Component) {
           gittoken = _props$dashboard.gittoken;
       var decimals = gittoken.decimals;
 
-      return leaderboard.map(function (ranking) {
-        var value = ranking.value,
-            numContributions = ranking.numContributions,
-            username = ranking.username;
+      return Object.keys(leaderboard).map(function (user) {
+        var _leaderboard$user = leaderboard[user],
+            value = _leaderboard$user.value,
+            numContributions = _leaderboard$user.numContributions,
+            username = _leaderboard$user.username;
 
         var x = Number(value / Math.pow(10, decimals));
         var y = numContributions;
@@ -96448,13 +96449,14 @@ var LeaderBoardTableComponent = function (_Component) {
           symbol = _props$dashboard$gitt.symbol;
 
 
-      return leaderboard.map(function (ranking, i) {
-        var username = ranking.username,
-            contributorAddress = ranking.contributorAddress,
-            value = ranking.value,
-            latestContribution = ranking.latestContribution,
-            numContributions = ranking.numContributions,
-            valuePerContribution = ranking.valuePerContribution;
+      return Object.keys(leaderboard).map(function (user, i) {
+        var _leaderboard$user = leaderboard[user],
+            username = _leaderboard$user.username,
+            contributorAddress = _leaderboard$user.contributorAddress,
+            value = _leaderboard$user.value,
+            latestContribution = _leaderboard$user.latestContribution,
+            numContributions = _leaderboard$user.numContributions,
+            valuePerContribution = _leaderboard$user.valuePerContribution;
 
         return _react2.default.createElement(
           'tr',
@@ -97148,6 +97150,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.loadWeb3 = loadWeb3;
 exports.ConnectToWebSocket = ConnectToWebSocket;
+exports.updateLeaderboard = updateLeaderboard;
+exports.initLeaderboard = initLeaderboard;
 exports.retrieveConctractDetails = retrieveConctractDetails;
 exports.authenticateGitHubUser = authenticateGitHubUser;
 
@@ -97208,6 +97212,29 @@ function ConnectToWebSocket() {
   };
 }
 
+function updateLeaderboard(_ref) {
+  var ranking = _ref.ranking;
+
+  return function (dispatch) {
+    var username = ranking.username;
+
+    dispatch({ type: 'SET_LEADERBOARD_DATA', id: username, value: ranking });
+  };
+}
+
+function initLeaderboard(_ref2) {
+  var leaderboard = _ref2.leaderboard;
+
+  return function (dispatch) {
+    console.log('leaderboard', leaderboard);
+    _bluebird2.default.resolve(leaderboard).map(function (ranking) {
+      dispatch(updateLeaderboard({ ranking: ranking }));
+    }).catch(function (error) {
+      console.log('initLeaderboard::error', error);
+    });
+  };
+}
+
 function retrieveConctractDetails() {
   return function (dispatch) {
     SocketClient.send(JSON.stringify({ event: 'analytics' }));
@@ -97222,7 +97249,8 @@ function retrieveConctractDetails() {
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data });
           break;
         case 'get_leaderboard':
-          dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data });
+          // dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data })
+          dispatch(initLeaderboard({ leaderboard: data }));
           break;
         case 'get_contributions':
           dispatch({ type: 'INIT_DATA', id: "contributionHistory", value: data });
@@ -97245,8 +97273,8 @@ function retrieveConctractDetails() {
               tokenInflation = data.tokenInflation,
               contributionHistory = data.contributionHistory;
 
-          console.log('data', data);
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics });
+          dispatch(updateLeaderboard({ ranking: leaderboard }));
           // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;
@@ -99090,7 +99118,7 @@ var INITITAL_DASHBOARD_STATE = {
   data: {
     totalSupply: [],
     contributionHistory: [],
-    leaderboard: [],
+    leaderboard: {},
     contributionFrequency: [],
     tokenInflation: [],
     summaryStatistics: {}
@@ -99105,6 +99133,12 @@ function DashboardReducer() {
     case 'INIT_DATA':
       return _extends({}, state, {
         data: _extends({}, state['data'], _defineProperty({}, action.id, action.value))
+      });
+    case 'SET_LEADERBOARD_DATA':
+      return _extends({}, state, {
+        data: _extends({}, state['data'], {
+          leaderboard: _extends({}, state['data']['leaderboard'], _defineProperty({}, action.id, action.value))
+        })
       });
     case 'SET_LATEST_CONTRIBUTION':
       return _extends({}, state, {

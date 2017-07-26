@@ -17,8 +17,8 @@ class LeaderBoardTableComponent extends Component {
   leaderBoard () {
     const { dashboard: { data: { leaderboard }, gittoken: { decimals, symbol } } } = this.props
 
-    return leaderboard.map((ranking, i) => {
-      const { username, contributorAddress, value, latestContribution, numContributions, valuePerContribution } = ranking;
+    return Object.keys(leaderboard).map((user, i) => {
+      const { username, contributorAddress, value, latestContribution, numContributions, valuePerContribution } = leaderboard[user];
       return (
         <tr key={i}>
           <td>{username}</td>

@@ -22,8 +22,8 @@ class TokensVsContributionsScatterChartComponent extends Component {
   data() {
     const { dashboard: { data: { leaderboard }, gittoken } } = this.props
     const { decimals } = gittoken
-    return leaderboard.map((ranking) => {
-      const { value, numContributions, username } = ranking
+    return Object.keys(leaderboard).map((user) => {
+      const { value, numContributions, username } = leaderboard[user]
       const x = Number(value / Math.pow(10, decimals))
       const y = numContributions
       const d = {
