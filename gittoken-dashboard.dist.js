@@ -97384,6 +97384,7 @@ function retrieveConctractDetails() {
           event = _JSON$parse2.event,
           data = _JSON$parse2.data;
 
+      console.log('event, data', event, data);
       switch (event) {
         case 'get_totalSupply':
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data });

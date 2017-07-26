@@ -66,6 +66,7 @@ export function retrieveConctractDetails() {
 
     SocketClient.onmessage = (e) => {
       const { event, data} = JSON.parse(e.data)
+      console.log('event, data', event, data)
       switch(event) {
         case 'get_totalSupply':
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data })
