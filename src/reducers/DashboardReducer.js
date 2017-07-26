@@ -17,7 +17,19 @@ const INITITAL_DASHBOARD_STATE = {
     leaderboard: {},
     contributionFrequency: [],
     tokenInflation: [],
-    summaryStatistics: {}
+    summaryStatistics: {
+      githubOrganization: '',
+      contractAddress: '',
+      tokenName: '',
+      tokenSymbol: '',
+      latestContribution: 0,
+      tokenSupply: 0,
+      reservedSupply: 0,
+      percentReserved: 0,
+      tokenInflation: 0,
+      totalContributions: 0,
+      uniqueContributions: 0
+    }
   }
 }
 
