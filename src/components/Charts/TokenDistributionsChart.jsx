@@ -14,24 +14,25 @@ class TokenDistributionsChartComponent extends Component {
 
   parseContributions () {
     let { dashboard: { data: { totalSupply }, gittoken: { decimals } } } = this.props
+    console.log('totalSupply', totalSupply[totalSupply.length - 1])
     if (totalSupply.length) {
-      return totalSupply.map((s, i) => {
-        console.log('s', s)
-        return {
-          x: new Date(+s.date * 1000).getTime(),
-          y: Number(s.totalSupply / Math.pow(10, decimals))
+      return totalSupply.sort((a,b) => {
+        return a.date - b.date
+      }).map((s, i) => {
+        if (s) {
+          if (i < totalSupply.length - 1) {
+            return {
+              x: new Date(+s.date * 1000).getTime(),
+              y: Number(s.totalSupply / Math.pow(10, decimals))
+            }
+          } else {
+            return {
+              x: new Date(+s.date * 1000).getTime(),
+              y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
+            }
+          }
         }
-        // if (i < totalSupply.length - 1) {
-        //   return {
-        //     x: new Date(+s.date * 1000).getTime(),
-        //     y: Number(s.totalSupply / Math.pow(10, decimals))
-        //   }
-        // } else {
-        //   return {
-        //     x: new Date(+s.date * 1000).getTime(),
-        //     y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
-        //   }
-        // }
+
       })
     }
   }

@@ -67519,24 +67519,24 @@ var TokenDistributionsChartComponent = function (_Component) {
           totalSupply = _props$dashboard.data.totalSupply,
           decimals = _props$dashboard.gittoken.decimals;
 
+      console.log('totalSupply', totalSupply[totalSupply.length - 1]);
       if (totalSupply.length) {
-        return totalSupply.map(function (s, i) {
-          console.log('s', s);
-          return {
-            x: new Date(+s.date * 1000).getTime(),
-            y: Number(s.totalSupply / Math.pow(10, decimals))
-            // if (i < totalSupply.length - 1) {
-            //   return {
-            //     x: new Date(+s.date * 1000).getTime(),
-            //     y: Number(s.totalSupply / Math.pow(10, decimals))
-            //   }
-            // } else {
-            //   return {
-            //     x: new Date(+s.date * 1000).getTime(),
-            //     y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
-            //   }
-            // }
-          };
+        return totalSupply.sort(function (a, b) {
+          return a.date - b.date;
+        }).map(function (s, i) {
+          if (s) {
+            if (i < totalSupply.length - 1) {
+              return {
+                x: new Date(+s.date * 1000).getTime(),
+                y: Number(s.totalSupply / Math.pow(10, decimals))
+              };
+            } else {
+              return {
+                x: new Date(+s.date * 1000).getTime(),
+                y: Number(totalSupply.pop().totalSupply / Math.pow(10, decimals))
+              };
+            }
+          }
         });
       }
     }
