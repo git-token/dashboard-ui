@@ -85520,7 +85520,9 @@ var TokenDistributionsTableComponent = function (_Component) {
           decimals = _props$dashboard.gittoken.decimals;
 
 
-      return contributionHistory.map(function (contribution, i) {
+      return contributionHistory.sort(function (a, b) {
+        return b.date - a.date;
+      }).map(function (contribution, i) {
         var username = contribution.username,
             rewardType = contribution.rewardType,
             value = contribution.value,

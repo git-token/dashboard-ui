@@ -17,7 +17,9 @@ class TokenDistributionsTableComponent extends Component {
   contributionHistory () {
     const { dashboard: { data: { contributionHistory }, gittoken: {  decimals } } } = this.props
 
-    return contributionHistory.map((contribution, i) => {
+    return contributionHistory.sort((a, b) => {
+      return b.date - a.date
+    }).map((contribution, i) => {
       const { username, rewardType, value, date } = contribution
       return (
         <tr key={i}>
