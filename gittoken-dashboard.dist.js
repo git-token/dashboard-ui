@@ -52346,9 +52346,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 window.addEventListener('load', function () {
   if (typeof window.web3 !== 'undefined') {
-    web3 = new _web2.default(window.web3.currentProvider);
+    window.web3 = new _web2.default(window.web3.currentProvider);
   } else {
-    web3 = new _web2.default(new _web2.default.providers.HttpProvider(_app.web3Provider));
+    window.web3 = new _web2.default(new _web2.default.providers.HttpProvider(_app.web3Provider));
   }
 
   _reactDom2.default.render(_react2.default.createElement(
@@ -67518,35 +67518,34 @@ var TokenDistributionsChartComponent = function (_Component) {
       var dispatch = this.props.dispatch;
     }
   }, {
-    key: 'parseContributions',
-    value: function parseContributions() {
-      var _props$dashboard = this.props.dashboard,
-          totalSupply = _props$dashboard.data.totalSupply,
-          decimals = _props$dashboard.gittoken.decimals;
+    key: 'distributions',
+    value: function distributions(_ref) {
+      var totalSupply = _ref.totalSupply;
+      var decimals = this.props.dashboard.gittoken.decimals;
 
-      if (totalSupply.length) {
-        return totalSupply.filter(function (s, i) {
-          if (s && i > 0 && s.totalSupply > totalSupply[i - 1].totalSupply) {
-            return true;
-          }
-        }).map(function (s, i) {
-          return {
-            x: new Date(+s.date * 1000).getTime(),
-            y: Number(s.totalSupply / Math.pow(10, decimals))
-          };
-        });
-      }
+
+      return totalSupply.filter(function (s, i) {
+        if (s) {
+          return true;
+        }
+      }).map(function (s, i) {
+        return {
+          x: new Date(+s.date * 1000).getTime(),
+          y: Number(s.totalSupply / Math.pow(10, decimals))
+        };
+      });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props$dashboard2 = this.props.dashboard,
-          summaryStatistics = _props$dashboard2.data.summaryStatistics,
-          decimals = _props$dashboard2.gittoken.decimals;
+      var _props$dashboard = this.props.dashboard,
+          _props$dashboard$data = _props$dashboard.data,
+          totalSupply = _props$dashboard$data.totalSupply,
+          summaryStatistics = _props$dashboard$data.summaryStatistics,
+          decimals = _props$dashboard.gittoken.decimals;
       var tokenSupply = summaryStatistics.tokenSupply,
           tokenSymbol = summaryStatistics.tokenSymbol;
 
-      var data = this.parseContributions();
 
       return _react2.default.createElement(
         'div',
@@ -67575,7 +67574,7 @@ var TokenDistributionsChartComponent = function (_Component) {
               data: { stroke: "tomato" },
               parent: { border: "1px solid #ccc" }
             },
-            data: data
+            data: this.distributions({ totalSupply: totalSupply })
           })
         )
       );
@@ -97098,15 +97097,16 @@ var MessageComponent = function (_Component) {
             _reactBootstrap.Jumbotron,
             null,
             _react2.default.createElement(
+              'a',
+              { href: 'https://github.com/git-token', target: '_blank' },
+              _react2.default.createElement('img', { style: {
+                  position: "absolute", top: 0, right: 0, border: 0
+
+                }, src: 'https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67', alt: 'Fork me on GitHub', 'data-canonical-src': 'https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png' })
+            ),
+            _react2.default.createElement(
               'div',
-              { style: { marginLeft: '50px' } },
-              _react2.default.createElement(
-                'a',
-                { href: 'https://github.com/git-token', target: '_blank' },
-                _react2.default.createElement('img', { style: {
-                    position: "absolute", top: 0, right: 0, border: 0
-                  }, src: 'https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67', alt: 'Fork me on GitHub', 'data-canonical-src': 'https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png' })
-              ),
+              { style: { marginLeft: '50px', marginRight: '50px' } },
               _react2.default.createElement(
                 'h3',
                 null,
@@ -97293,6 +97293,7 @@ exports.loadWeb3 = loadWeb3;
 exports.ConnectToWebSocket = ConnectToWebSocket;
 exports.updateLeaderboard = updateLeaderboard;
 exports.initLeaderboard = initLeaderboard;
+exports.initTotalSupply = initTotalSupply;
 exports.retrieveConctractDetails = retrieveConctractDetails;
 exports.authenticateGitHubUser = authenticateGitHubUser;
 
@@ -97375,6 +97376,21 @@ function initLeaderboard(_ref2) {
   };
 }
 
+function initTotalSupply(_ref3) {
+  var totalSupply = _ref3.totalSupply;
+
+  return function (dispatch) {
+    _bluebird2.default.resolve(totalSupply).map(function (datum) {
+      var date = datum.date,
+          totalSupply = datum.totalSupply;
+
+      dispatch({ type: 'UPDATE_TOKEN_SUPPLY', id: date, value: totalSupply });
+    }).catch(function (error) {
+      console.log('initTotalSupply::error', error);
+    });
+  };
+}
+
 function retrieveConctractDetails() {
   return function (dispatch) {
     SocketClient.send(JSON.stringify({ event: 'analytics' }));
@@ -97388,6 +97404,7 @@ function retrieveConctractDetails() {
       switch (event) {
         case 'get_totalSupply':
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data });
+          // dispatch(initTotalSupply({ totalSupply: data }))
           break;
         case 'get_leaderboard':
           // dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data })
@@ -97419,8 +97436,6 @@ function retrieveConctractDetails() {
           dispatch(initLeaderboard({ leaderboard: leaderboard }));
           dispatch({ type: 'UPDATE_DATA', id: 'totalSupply', value: totalSupply });
           dispatch({ type: 'UPDATE_DATA', id: 'contributionHistory', value: contributionHistory });
-          // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
-          // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;
         default:
           alert('Incoming Unhandled Event: ' + event);
@@ -98972,7 +98987,7 @@ function promisifyContract(_ref9) {
   var abi = _ref9.abi,
       contractAddress = _ref9.contractAddress;
 
-  var contract = web3.eth.contract(abi).at(contractAddress);
+  var contract = window.web3.eth.contract(abi).at(contractAddress);
   Object.keys(contract).map(function (method) {
     if (contract[method] && contract[method]['request']) {
       contract[method] = (0, _bluebird.promisifyAll)(contract[method]);

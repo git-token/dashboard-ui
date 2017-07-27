@@ -60,6 +60,17 @@ export function initLeaderboard({ leaderboard }) {
   }
 }
 
+export function initTotalSupply({ totalSupply }) {
+  return (dispatch) => {
+    Promise.resolve(totalSupply).map((datum) => {
+      const { date, totalSupply } = datum
+      dispatch({ type: 'UPDATE_TOKEN_SUPPLY', id: date, value: totalSupply })
+    }).catch((error) => {
+      console.log('initTotalSupply::error', error)
+    })
+  }
+}
+
 export function retrieveConctractDetails() {
   return (dispatch) => {
     SocketClient.send(JSON.stringify({ event: 'analytics' }))
@@ -70,6 +81,7 @@ export function retrieveConctractDetails() {
       switch(event) {
         case 'get_totalSupply':
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data })
+          // dispatch(initTotalSupply({ totalSupply: data }))
           break;
         case 'get_leaderboard':
           // dispatch({ type: 'INIT_DATA', id: "leaderboard", value: data })
@@ -102,8 +114,6 @@ export function retrieveConctractDetails() {
           dispatch(initLeaderboard({ leaderboard }))
           dispatch({ type: 'UPDATE_DATA', id: 'totalSupply', value: totalSupply })
           dispatch({ type: 'UPDATE_DATA', id: 'contributionHistory', value: contributionHistory })
-          // dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
-          // dispatch({ type: 'INIT_CONTRIBUTION_FREQUENCY_DATA', value: data })
           break;
         default:
           alert(`Incoming Unhandled Event: ${event}`)

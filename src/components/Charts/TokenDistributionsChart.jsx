@@ -12,26 +12,25 @@ class TokenDistributionsChartComponent extends Component {
     const { dispatch } = this.props
   }
 
-  parseContributions () {
-    let { dashboard: { data: { totalSupply }, gittoken: { decimals } } } = this.props
-    if (totalSupply.length) {
-      return totalSupply.filter((s, i) => {
-        if (s && i > 0 && s.totalSupply > totalSupply[i-1].totalSupply) {
-          return true
-        }
-      }).map((s, i) => {
-        return {
-          x: new Date(+s.date * 1000).getTime(),
-          y: Number(s.totalSupply / Math.pow(10, decimals))
-        }
-      })
-    }
+  distributions ({ totalSupply }) {
+    let { dashboard: { gittoken: { decimals } } } = this.props
+
+    return totalSupply.filter((s, i) => {
+      if (s) {
+        return true
+      }
+    }).map((s, i) => {
+      return {
+        x: new Date(+s.date * 1000).getTime(),
+        y: Number(s.totalSupply / Math.pow(10, decimals))
+      }
+    })
+
   }
 
   render() {
-    const { dashboard: { data: { summaryStatistics }, gittoken: { decimals } } } = this.props
+    const { dashboard: { data: { totalSupply, summaryStatistics }, gittoken: { decimals } } } = this.props
     const { tokenSupply, tokenSymbol } = summaryStatistics
-    const data = this.parseContributions()
 
     return (
       <div style={{ marginTop: '25px' }}>
@@ -51,7 +50,7 @@ class TokenDistributionsChartComponent extends Component {
               data: { stroke: "tomato" },
               parent: { border: "1px solid #ccc"}
             }}
-            data={data}
+            data={this.distributions({ totalSupply })}
           />
         </VictoryChart>
       </div>

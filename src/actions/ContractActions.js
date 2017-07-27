@@ -167,7 +167,7 @@ export function errorMsg (error) {
 }
 
 export function promisifyContract ({ abi, contractAddress }) {
-  let contract = web3.eth.contract(abi).at(contractAddress)
+  let contract = window.web3.eth.contract(abi).at(contractAddress)
   Object.keys(contract).map((method) => {
     if (contract[method] && contract[method]['request']) {
       contract[method] = promisifyAll(contract[method])
