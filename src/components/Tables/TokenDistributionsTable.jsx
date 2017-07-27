@@ -59,7 +59,7 @@ class TokenDistributionsTableComponent extends Component {
 
     return (
       <div >
-        <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+        <div style={{ textAlign: 'left', marginBottom: '10px' }}>
           <h3>Contribution History</h3>
         </div>
         <div style={{ height: '600px', overflow: 'scroll' }} >

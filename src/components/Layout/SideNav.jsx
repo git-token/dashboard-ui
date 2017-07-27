@@ -14,12 +14,21 @@ class SideNavComponent extends Component {
     console.log('handleSelect::id', id)
   }
 
+  renderButtons() {
+    const { dashboard: { sidenav: { options } } } = this.props
+
+    return options.map((option, i) => {
+      return (
+        <Button key={i} bsStyle={'info'} bsSize={'lg'}>{option}</Button>
+      )
+    })
+  }
+
   render() {
     return (
       <div>
         <ButtonGroup vertical>
-          <Button bsStyle={'primary'}>Update Contract Settings</Button>
-          <Button bsStyle={'primary'}>Exchange Tokens</Button>
+          {this.renderButtons()}
         </ButtonGroup>
       </div>
     )

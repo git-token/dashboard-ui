@@ -51,6 +51,7 @@ class TokensVsContributionsScatterChartComponent extends Component {
           width={600}
           height={300}
           responsive={true}
+          padding={{ left: 60, bottom: 50, right: 50, top: 50 }}
         >
 
           <VictoryScatter

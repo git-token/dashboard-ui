@@ -11,6 +11,13 @@ const INITITAL_DASHBOARD_STATE = {
     decimals: 8,
     showSideNav: false,
   },
+  views: {
+    activeView: 'Token Statistics',
+    options: [
+      'Account Settings',
+      'Contract Settings'
+    ]
+  },
   data: {
     totalSupply: [],
     contributionHistory: [],
@@ -63,6 +70,14 @@ export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action)
             ...state['data']['leaderboard'],
             [action.id]: action.value
           }
+        }
+      }
+    case 'UPDATE_VIEWS_DATA':
+      return {
+        ...state,
+        views: {
+          ...state['views'],
+          [action.id]: action.value
         }
       }
     default:

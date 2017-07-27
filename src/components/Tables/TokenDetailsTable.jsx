@@ -59,6 +59,10 @@ class TokenDetailsTableComponent extends Component {
               <td>{tokenSymbol}</td>
               </tr>
               <tr >
+                <td>Total Contributions</td>
+                <td>{totalContributions}</td>
+              </tr>
+              <tr >
                 <td>Token Supply</td>
                 <td>{Number(tokenSupply / Math.pow(10, decimals)).toLocaleString()}</td>
               </tr>
@@ -73,6 +77,14 @@ class TokenDetailsTableComponent extends Component {
               <tr >
                 <td>Days Since Last Contribution</td>
                 <td>{daysSinceContribution} days</td>
+              </tr>
+              <tr >
+                <td>Token Inflation Rate</td>
+                <td>{tokenInflation}</td>
+              </tr>
+              <tr >
+                <td>Unique Contributors</td>
+                <td>{uniqueContributions}</td>
               </tr>
             </tbody>
           </Table>

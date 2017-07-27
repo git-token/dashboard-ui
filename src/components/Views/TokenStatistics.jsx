@@ -8,6 +8,7 @@ import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../acti
 
 import {
   TokenDistributionsChart,
+  TokenInflationChart,
   GitContributionFrequencyChart,
   TokensVsContributionsScatterChart
 } from '../Charts/index'
@@ -23,14 +24,13 @@ import {
   PageTabs
 } from '../Layout/index'
 
-class DashboardComponent extends Component {
+class TokenStatisticsComponent extends Component {
   constructor(opts) {
     super(opts)
   }
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(loadWeb3())
   }
 
   render() {
@@ -40,13 +40,29 @@ class DashboardComponent extends Component {
       <div>
         <Row>
           <Col sm={12}>
-            <Message />
-            <Header />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12} style={{marginLeft: '25px'}} >
-            <PageTabs />
+            <Col sm={4}>
+              <TokenDetailsTable />
+              <LeaderBoardTable />
+              <TokenDistributionsTable />
+            </Col>
+            <Col sm={8}>
+              <Row>
+                <Col sm={6}>
+                  <TokenDistributionsChart />
+                </Col>
+                <Col sm={6}>
+                  <TokenInflationChart />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={6}>
+                  <GitContributionFrequencyChart />
+                </Col>
+                <Col sm={6}>
+                  <TokensVsContributionsScatterChart />
+                </Col>
+              </Row>
+            </Col>
           </Col>
         </Row>
       </div>
@@ -61,6 +77,6 @@ const mapStoreToProps = (store, props) => {
   }
 }
 
-const Dashboard = connect(mapStoreToProps)(DashboardComponent)
+const TokenStatistics = connect(mapStoreToProps)(TokenStatisticsComponent)
 
-export default Dashboard
+export default TokenStatistics

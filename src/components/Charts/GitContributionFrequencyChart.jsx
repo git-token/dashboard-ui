@@ -24,6 +24,8 @@ class GitContributionFrequencyChartComponent extends Component {
 
     return contributionFrequency.map((datum, i) => {
       const { rewardType, count, percentOfTotal } = datum
+      // console.log('percentOfTotal', percentOfTotal)
+      // console.log('rewardType', rewardType)
       return { x: rewardType, y: percentOfTotal }
     })
   }

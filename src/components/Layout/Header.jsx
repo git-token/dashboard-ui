@@ -10,13 +10,14 @@ class HeaderComponent extends Component {
     super(opts)
   }
 
-  toggleSideNav() {
+  logoAction() {
     const { dispatch, dashboard: { gittoken: { showSideNav } } } = this.props
-    dispatch({
-      type: 'SET_GITTOKEN_DETAILS',
-      id: 'showSideNav',
-      value: !showSideNav
-    })
+    // dispatch({
+    //   type: 'SET_GITTOKEN_DETAILS',
+    //   id: 'showSideNav',
+    //   value: !showSideNav
+    // })
+    alert('Hello :)')
   }
 
   render() {
@@ -29,7 +30,7 @@ class HeaderComponent extends Component {
       <Row>
         <Col sm={8}>
           <div style={{ marginLeft: '25px'}}>
-            <h1> <a href="#" onClick={this.toggleSideNav.bind(this)}>{tokenName}</a>
+            <h1 style={{fontSize: '72px'}}> <a href="#" onClick={this.logoAction.bind(this)}>{tokenName}</a>
           <small> | <a href="#"><img src={`https://img.shields.io/badge/Token-${tokenSymbol}-brightgreen.svg`}/></a>  <a href={`https://github.com/${githubOrganization}`} target="_blank" ><img src="https://img.shields.io/badge/Status-ALPHA-orange.svg"/></a> <a href="#"><img src={`https://img.shields.io/badge/${tokenSymbol}/ETH-0.00-red.svg`}/></a></small>
             </h1>
           </div>

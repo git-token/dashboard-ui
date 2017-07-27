@@ -110,10 +110,19 @@ export function retrieveConctractDetails() {
             tokenInflation,
             contributionHistory
           } = data
+
+          /* NOTE Depending on the structure of the data returned and the structure anticipated by the redux store, ensure to use the proper action type (INIT/UPDATE);
+          TODO There should be better differentiation here between data structure types...
+          */
+
           dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: summaryStatistics })
           dispatch(initLeaderboard({ leaderboard }))
           dispatch({ type: 'UPDATE_DATA', id: 'totalSupply', value: totalSupply })
           dispatch({ type: 'UPDATE_DATA', id: 'contributionHistory', value: contributionHistory })
+
+          dispatch({ type: 'INIT_DATA', id: "contributionFrequency", value: contributionFrequency })
+
+          dispatch({ type: 'UPDATE_DATA', id: "tokenInflation", value: tokenInflation })
           break;
         default:
           alert(`Incoming Unhandled Event: ${event}`)

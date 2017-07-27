@@ -41,9 +41,9 @@ class TokenDistributionsChartComponent extends Component {
           scale={{x: "time"}}
           theme={VictoryTheme.material}
           width={600}
-          height={200}
+          height={300}
           responsive={true}
-          padding={{ left: 60, top: 20, bottom: 50, right: 60 }}
+          padding={{ left: 60, bottom: 50, right: 50, top: 50 }}
         >
           <VictoryLine
             style={{
