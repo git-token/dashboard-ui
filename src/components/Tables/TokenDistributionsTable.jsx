@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {
   Row, Col, Table
 } from 'react-bootstrap'
-
+import { timeAgo } from '../../actions/DashboardActions'
 
 class TokenDistributionsTableComponent extends Component {
   constructor(opts) {
@@ -15,7 +15,7 @@ class TokenDistributionsTableComponent extends Component {
   }
 
   contributionHistory () {
-    const { dashboard: { data: { contributionHistory }, gittoken: {  decimals } } } = this.props
+    const { dashboard: { data: { contributionHistory }, gittoken: { tokenDetails: { decimals, symbol } } } } = this.props
 
     return contributionHistory.sort((a, b) => {
       return b.date - a.date
@@ -25,51 +25,27 @@ class TokenDistributionsTableComponent extends Component {
         <tr key={i}>
           <td>{username}</td>
           <td>{rewardType}</td>
-          <td>{value / Math.pow(10, decimals)}</td>
-          <td>{new Date(date * 1000).toString()}</td>
+          <td>{value / Math.pow(10, decimals)} {symbol}</td>
+          <td>{timeAgo({ date })}</td>
         </tr>
       )
     })
-
-    // const events = Object.keys(contributions)
-    //
-    // let initValue = 0
-    //
-    // if (events.length) {
-    //   return events.sort((a, b) => {
-    //     const d1 = new Date(contributions[a]['args']['date'].toNumber())
-    //     const d2 = new Date(contributions[b]['args']['date'].toNumber())
-    //     return d2 - d1
-    //   }).map((e, i) => {
-    //     const { args: { contributor, username, date, value, rewardType } } = contributions[e]
-        // return (
-        //   <tr key={i}>
-        //     <td>{username}</td>
-        //     <td>{rewardType}</td>
-        //     <td>{value.toNumber() / Math.pow(10, decimals)}</td>
-        //     <td>{new Date(date.toNumber() * 1000).toString()}</td>
-        //   </tr>
-        // )
-    //   })
-    // }
   }
 
   render() {
-    const { dashboard: { gittoken } } = this.props
-
     return (
       <div>
         <div style={{ textAlign: 'left', marginBottom: '10px' }}>
           <h3>Contribution History</h3>
         </div>
-        <div style={{ overflow: 'scroll' }} >
+        <div style={{ height: 400, overflow: 'scroll' }} >
           <Table responsive hover  >
             <thead>
               <tr>
                 <th>Contributor</th>
                 <th>Contribution Type</th>
                 <th># of Tokens Distributed</th>
-                <th>Date</th>
+                <th>Time Since Contribution</th>
               </tr>
             </thead>
             <tbody>

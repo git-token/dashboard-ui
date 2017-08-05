@@ -23,7 +23,7 @@ class TokenInflationChartComponent extends Component {
       }).map((s, i) => {
         return {
           x: new Date(+s.date * 1000).getTime(),
-          y: Number(s.geometricMean)
+          y: Number(s.geometricMean * 100)
         }
       })
     }
@@ -40,20 +40,19 @@ class TokenInflationChartComponent extends Component {
       }).map((s, i) => {
         return {
           x: new Date(+s.date * 1000).getTime(),
-          y: Number(s.periodicRate)
+          y: Number(s.periodicRate * 100)
         }
       })
     }
   }
 
   render() {
-    const { dashboard: { data: { tokenInflation, tokenInflationMean, summaryStatistics }, gittoken: { decimals } } } = this.props
-    const { tokenSupply, tokenSymbol } = summaryStatistics
+    const { dashboard: { data: { summaryStatistics, tokenInflation, tokenInflationMean } } } = this.props
 
     return (
       <div style={{ marginTop: '25px' }}>
         <div style={{ textAlign: 'left' }}>
-          <h3>{`Token Supply Inflation`}</h3>
+          <h3>{`Token Supply Inflation`} | {(+summaryStatistics['tokenInflation']*100).toFixed(3)} %</h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}
@@ -62,6 +61,7 @@ class TokenInflationChartComponent extends Component {
           height={300}
           responsive={true}
           padding={{ left: 60, bottom: 50, right: 50, top: 50 }}
+          domain={{ y: [0, 40]}}
         >
           <VictoryGroup>
             <VictoryLegend

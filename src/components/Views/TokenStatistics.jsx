@@ -38,43 +38,43 @@ class TokenStatisticsComponent extends Component {
     const { dispatch, dashboard: { gittoken: { showSideNav } } } = this.props
 
     return (
-      <div>
+      <div style={{ marginRight: "50px"}}>
         <Row>
           <Col sm={12}>
-            <Col sm={12}>
-              <Row>
-                <Col sm={8}>
-                  <Row>
-                    <Col sm={6}>
-                      <TokenDistributionsChart />
-                    </Col>
-                    <Col sm={6}>
-                      <TokenInflationChart />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm={4}>
-                      <GitContributionFrequencyChart />
-                    </Col>
-                    <Col sm={4}>
-                      <UserTokenCreationChart />
-                    </Col>
-                    <Col sm={4}>
-                      <TokensVsContributionsScatterChart />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm={12}>
-                      <TokenDistributionsTable />
-                    </Col>
-                  </Row>
-                </Col>
-                <Col sm={4}>
-                  <TokenDetailsTable />
-                  <LeaderBoardTable />
-                </Col>
-              </Row>
-            </Col>
+            <Row>
+              <Col sm={7}>
+                <Row>
+                  <Col sm={6}>
+                    <TokenDistributionsChart />
+                  </Col>
+                  <Col sm={6}>
+                    <TokenInflationChart />
+                  </Col>
+                </Row>
+                <hr/>
+                <Row>
+                  <Col sm={12}>
+                    <TokenDistributionsTable />
+                  </Col>
+                </Row>
+              </Col>
+              <Col sm={5}>
+                <TokenDetailsTable />
+                <LeaderBoardTable />
+              </Col>
+            </Row>
+            <hr/>
+            <Row>
+              <Col sm={4}>
+                <GitContributionFrequencyChart />
+              </Col>
+              <Col sm={4}>
+                <UserTokenCreationChart />
+              </Col>
+              <Col sm={4}>
+                <TokensVsContributionsScatterChart />
+              </Col>
+            </Row>
           </Col>
         </Row>
       </div>

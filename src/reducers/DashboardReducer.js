@@ -3,13 +3,19 @@ const INITITAL_DASHBOARD_STATE = {
   github: {
     accessToken: '',
     profile: {
-      username: '' //'Ryanmtate'
+      username: ''
     }
   },
   gittoken: {
     contributorAddress: '',
-    decimals: 8,
     showSideNav: false,
+    tokenDetails: {
+      address: '',
+      decimals: 8,
+      name: '',
+      symbol: '',
+      organization: ''
+    }
   },
   views: {
     activeView: 'Token Statistics',
@@ -44,6 +50,14 @@ const INITITAL_DASHBOARD_STATE = {
 
 export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action) {
   switch(action.type) {
+    case 'UPDATE_GITTOKEN':
+      return {
+        ...state,
+        gittoken: {
+          ...state['gittoken'],
+          [action.id]: action.value
+        }
+      }
     case 'INIT_DATA':
       return {
         ...state,

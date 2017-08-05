@@ -30,7 +30,7 @@ class FooterComponent extends Component {
       <Row>
         <Col sm={12}>
           <div style={{ marginTop: "20px", textAlign: 'center' }}>
-            <h3>Powered By<img src="./src/assets/images/GitTokenLogo.png" style={{ marginLeft: "-10px", height: "72px" }} /></h3>
+            <h3>Powered By<a href="https://GitToken.org" target="_blank"><img src="./src/assets/images/GitTokenLogo.png" style={{ marginLeft: "-10px", marginRight: "-10px", height: "72px" }} /></a> GitToken</h3>
           </div>
         </Col>
       </Row>

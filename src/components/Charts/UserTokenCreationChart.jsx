@@ -1,6 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { VictoryLabel, VictoryLegend, VictoryChart, VictoryGroup, VictoryStack, VictoryArea, VictoryPortal, VictoryScatter, VictoryTheme } from 'victory'
+import {
+  VictoryLabel,
+  VictoryTooltip,
+  VictoryChart,
+  VictoryGroup,
+  VictoryStack,
+  VictoryArea,
+  VictoryPortal,
+  VictoryScatter,
+  VictoryTheme
+} from 'victory'
 
 
 class UserTokenCreationChartComponent extends Component {
@@ -13,8 +23,7 @@ class UserTokenCreationChartComponent extends Component {
   }
 
   userGroups ({ userTokenCreation, username, key }) {
-    const { dashboard: { gittoken: { decimals } } } = this.props
-    if (!username) {
+    if (!username || username == 'Total' ) {
       return null
     } else {
       const data = userTokenCreation.filter((s, i) => {
@@ -42,8 +51,8 @@ class UserTokenCreationChartComponent extends Component {
   }
 
   render() {
-    const { dashboard: { data: { userTokenCreation, leaderboard, summaryStatistics }, gittoken: { decimals } } } = this.props
-    const { tokenSupply, tokenSymbol } = summaryStatistics
+    const { dashboard: { data: { userTokenCreation, leaderboard, summaryStatistics } } } = this.props
+    const { tokenSupply } = summaryStatistics
 
     return (
       <div style={{ marginTop: '25px' }}>
@@ -59,7 +68,7 @@ class UserTokenCreationChartComponent extends Component {
           domain={{ y: [0, 100] }}
           padding={{ left: 60, bottom: 50, right: 50, top: 50 }}
         >
-          <VictoryStack colorScale="warm">
+          <VictoryStack colorScale="warm" >
             {Object.keys(leaderboard).map((username, i) => {
               return this.userGroups({ userTokenCreation, username, key: i })
             })}

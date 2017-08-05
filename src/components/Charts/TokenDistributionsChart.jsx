@@ -13,7 +13,7 @@ class TokenDistributionsChartComponent extends Component {
   }
 
   distributions ({ totalSupply }) {
-    let { dashboard: { gittoken: { decimals } } } = this.props
+    let { dashboard: { gittoken: { tokenDetails: { decimals } } } } = this.props
 
     return totalSupply.filter((s, i) => {
       if (s) {
@@ -29,13 +29,13 @@ class TokenDistributionsChartComponent extends Component {
   }
 
   render() {
-    const { dashboard: { data: { totalSupply, summaryStatistics }, gittoken: { decimals } } } = this.props
-    const { tokenSupply, tokenSymbol } = summaryStatistics
+    const { dashboard: { data: { totalSupply, summaryStatistics }, gittoken: { tokenDetails: { decimals, symbol } } } } = this.props
+    const { tokenSupply } = summaryStatistics
 
     return (
       <div style={{ marginTop: '25px' }}>
         <div style={{ textAlign: 'left' }}>
-          <h3>{`Total Token Supply | ${Number(tokenSupply / Math.pow(10, decimals)).toLocaleString()} ${tokenSymbol}`}</h3>
+          <h3>{`Total Token Supply | ${Number(tokenSupply / Math.pow(10, decimals)).toLocaleString()} ${symbol}`}</h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}

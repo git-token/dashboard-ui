@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {
   Row, Col, Table
 } from 'react-bootstrap'
+import { timeAgo } from '../../actions/DashboardActions'
 
 
 class LeaderBoardTableComponent extends Component {
@@ -15,7 +16,7 @@ class LeaderBoardTableComponent extends Component {
   }
 
   leaderBoard () {
-    const { dashboard: { data: { leaderboard }, gittoken: { decimals, symbol } } } = this.props
+    const { dashboard: { data: { leaderboard, summaryStatistics: { tokenSupply, totalContributions } }, gittoken: { tokenDetails: { decimals, symbol } } } } = this.props
 
     return Object.keys(leaderboard).sort((a, b) => {
       return leaderboard[b].numContributions - leaderboard[a].numContributions
@@ -30,18 +31,14 @@ class LeaderBoardTableComponent extends Component {
         percentTokenCreation
       } = leaderboard[user];
 
-      const daysSinceContribution = Number(
-        (new Date().getTime() - new Date(latestContribution * 1000).getTime())  / (864e5)
-      ).toLocaleString()
-
       return (
         <tr key={i}>
           <td>{username}</td>
           <td>{Number(value / Math.pow(10, decimals)).toLocaleString()} {symbol}</td>
           <td>{numContributions}</td>
-          <td>{Number(valuePerContribution / Math.pow(10, decimals)).toLocaleString()}</td>
-          <td>{Number(percentTokenCreation).toLocaleString()}</td>
-          <td>{daysSinceContribution}</td>
+          <td>{Number((numContributions / totalContributions) * (value / tokenSupply) * 100).toLocaleString()} %</td>
+          <td>{Number((value / tokenSupply ) * 100).toLocaleString()} %</td>
+        <td>{timeAgo({ date: latestContribution })}</td>
         </tr>
       )
     })
@@ -62,10 +59,10 @@ class LeaderBoardTableComponent extends Component {
               <tr>
                 <th>Contributor</th>
                 <th># of Tokens Created</th>
-                <th># of Contributions</th>
-                <th>Tokens / Contributions</th>
-                <th>Percent of Tokens Created</th>
-                <th>Days Since Last Contribution</th>
+                <th># of GitHub Contributions</th>
+                <th>Percent (%) of Tokens Contributed To</th>
+                <th>Percent (%) of Tokens Created</th>
+                <th>Time Since Last Contribution</th>
               </tr>
             </thead>
             <tbody>
