@@ -58,11 +58,11 @@ class TokenDistributionsTableComponent extends Component {
     const { dashboard: { gittoken } } = this.props
 
     return (
-      <div >
+      <div>
         <div style={{ textAlign: 'left', marginBottom: '10px' }}>
           <h3>Contribution History</h3>
         </div>
-        <div style={{ height: '600px', overflow: 'scroll' }} >
+        <div style={{ overflow: 'scroll' }} >
           <Table responsive hover  >
             <thead>
               <tr>

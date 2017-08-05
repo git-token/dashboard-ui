@@ -24,6 +24,8 @@ const INITITAL_DASHBOARD_STATE = {
     leaderboard: {},
     contributionFrequency: [],
     tokenInflation: [],
+    tokenInflationMean: [],
+    userTokenCreation: [],
     summaryStatistics: {
       githubOrganization: '',
       contractAddress: '',

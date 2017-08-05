@@ -17,7 +17,7 @@ export function loadWeb3() {
       if(!web3 || !web3.eth || !web3.currentProvider) {
         dispatch(loadWeb3())
       } else {
-        dispatch(authenticateGitHubUser())
+        // dispatch(authenticateGitHubUser())
         dispatch(ConnectToWebSocket())
       }
       return null;
@@ -79,7 +79,7 @@ export function retrieveConctractDetails() {
       const { event, data} = JSON.parse(e.data)
       console.log('event, data', event, data)
       switch(event) {
-        case 'get_totalSupply':
+        case 'get_total_supply':
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data })
           // dispatch(initTotalSupply({ totalSupply: data }))
           break;
@@ -96,9 +96,16 @@ export function retrieveConctractDetails() {
         case 'get_token_inflation':
           dispatch({ type: 'INIT_DATA', id: "tokenInflation", value: data })
           break;
+        case 'get_token_inflation_mean':
+          dispatch({ type: 'INIT_DATA', id: "tokenInflationMean", value: data })
+          break;
         case 'get_summary_statistics':
-          // console.log('get_summary_statistics::data', data)
-          dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: data })
+          console.log('get_summary_statistics::data', data)
+          dispatch({ type: 'INIT_DATA', id: "summaryStatistics", value: data[0] })
+          break;
+        case 'get_user_token_creation':
+          console.log('get_user_token_creation::data', data)
+          dispatch({ type: 'INIT_DATA', id: "userTokenCreation", value: data })
           break;
         case 'broadcast_contribution_data':
           console.log('broadcast_contribution_data', data)
@@ -125,7 +132,7 @@ export function retrieveConctractDetails() {
           dispatch({ type: 'UPDATE_DATA', id: "tokenInflation", value: tokenInflation })
           break;
         default:
-          alert(`Incoming Unhandled Event: ${event}`)
+          // alert(`Incoming Unhandled Event: ${event}`)
       }
     }
   }

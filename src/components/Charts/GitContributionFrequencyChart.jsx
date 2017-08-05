@@ -22,7 +22,9 @@ class GitContributionFrequencyChartComponent extends Component {
   frequencyData () {
     const { dashboard: { data: { contributionFrequency } } } = this.props
 
-    return contributionFrequency.map((datum, i) => {
+    return contributionFrequency.sort((a, b) => {
+      return a.count - b.count
+    }).map((datum, i) => {
       const { rewardType, count, percentOfTotal } = datum
       // console.log('percentOfTotal', percentOfTotal)
       // console.log('rewardType', rewardType)

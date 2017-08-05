@@ -39,7 +39,7 @@ class MessageComponent extends Component {
                 GitToken is open source software for any GitHub organization to issue and distribute Ethereum tokens for git contributions.
               </h3>
               <h3>
-                An alpha version of the GitToken software is powering this dashboard. To interact with the GitToken contract services, please download <a href="metamask.io" target="_blank">MetaMask</a> and set your RPC provider to <u>http://138.68.225.133:8545</u>.
+                An alpha version of the GitToken software is powering this dashboard. To interact with the GitToken contract services, please download <a href="https://metamask.io" target="_blank">MetaMask</a> and set your RPC provider to <u>http://138.68.225.133:8545</u>.
               </h3>
               <h3>
                 <strong>DISCLAIMER</strong>: The GitToken contracts and tokens are issued on a private Ethereum network for development and testing purposes only. Tokens issued on this network do not hold any value. This software is pre-release alphaware, and is not suitable for production environments in its current form.

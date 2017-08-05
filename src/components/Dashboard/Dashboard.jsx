@@ -18,6 +18,7 @@ import {
 } from '../Tables/index'
 import {
   Header,
+  Footer,
   SideNav,
   Message,
   PageTabs
@@ -49,6 +50,7 @@ class DashboardComponent extends Component {
             <PageTabs />
           </Col>
         </Row>
+        <Footer />
       </div>
     )
   }

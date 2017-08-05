@@ -43,7 +43,7 @@ class TokensVsContributionsScatterChartComponent extends Component {
 
     return (
       <div style={{ marginTop: '25px' }}>
-        <div style={{ textAlign: 'left', marginBottom: '-10px' }}>
+        <div style={{ textAlign: 'left' }}>
           <h3>Tokens Vs. Contributions</h3>
         </div>
         <VictoryChart

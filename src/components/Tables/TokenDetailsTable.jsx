@@ -39,7 +39,7 @@ class TokenDetailsTableComponent extends Component {
         <div style={{ textAlign: 'keft', marginBottom: '10px' }}>
           <h3>Token Details</h3>
         </div>
-        <div style={{ height: '400px', overflow: 'scroll' }} >
+        <div style={{ overflow: 'scroll' }} >
           <Table responsive hover  >
             <tbody>
               <tr >
@@ -79,8 +79,8 @@ class TokenDetailsTableComponent extends Component {
                 <td>{daysSinceContribution} days</td>
               </tr>
               <tr >
-                <td>Token Inflation Rate</td>
-                <td>{tokenInflation}</td>
+                <td>Token Supply Inflation Rate (Geometric Average)</td>
+              <td>{+tokenInflation.toFixed(8)}</td>
               </tr>
               <tr >
                 <td>Unique Contributors</td>

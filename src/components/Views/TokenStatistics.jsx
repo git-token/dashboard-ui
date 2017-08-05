@@ -10,7 +10,8 @@ import {
   TokenDistributionsChart,
   TokenInflationChart,
   GitContributionFrequencyChart,
-  TokensVsContributionsScatterChart
+  TokensVsContributionsScatterChart,
+  UserTokenCreationChart
 } from '../Charts/index'
 import {
   TokenDistributionsTable,
@@ -40,26 +41,37 @@ class TokenStatisticsComponent extends Component {
       <div>
         <Row>
           <Col sm={12}>
-            <Col sm={4}>
-              <TokenDetailsTable />
-              <LeaderBoardTable />
-              <TokenDistributionsTable />
-            </Col>
-            <Col sm={8}>
+            <Col sm={12}>
               <Row>
-                <Col sm={6}>
-                  <TokenDistributionsChart />
+                <Col sm={8}>
+                  <Row>
+                    <Col sm={6}>
+                      <TokenDistributionsChart />
+                    </Col>
+                    <Col sm={6}>
+                      <TokenInflationChart />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={4}>
+                      <GitContributionFrequencyChart />
+                    </Col>
+                    <Col sm={4}>
+                      <UserTokenCreationChart />
+                    </Col>
+                    <Col sm={4}>
+                      <TokensVsContributionsScatterChart />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12}>
+                      <TokenDistributionsTable />
+                    </Col>
+                  </Row>
                 </Col>
-                <Col sm={6}>
-                  <TokenInflationChart />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={6}>
-                  <GitContributionFrequencyChart />
-                </Col>
-                <Col sm={6}>
-                  <TokensVsContributionsScatterChart />
+                <Col sm={4}>
+                  <TokenDetailsTable />
+                  <LeaderBoardTable />
                 </Col>
               </Row>
             </Col>

@@ -12,30 +12,48 @@ class TokenInflationChartComponent extends Component {
     const { dispatch } = this.props
   }
 
-  inflationData ({ tokenInflation, avg }) {
-    // console.log('tokenInflation', tokenInflation)
-    if (tokenInflation.length) {
-      return tokenInflation.filter((s, i) => {
-        if (s) {
+  inflationMeanData ({ tokenInflationMean }) {
+    if (tokenInflationMean.length) {
+      return tokenInflationMean.filter((s, i) => {
+        if (s.geometricMean) {
           return true
         }
+      }).sort((a, b) => {
+        return a.date - b.date;
       }).map((s, i) => {
         return {
           x: new Date(+s.date * 1000).getTime(),
-          y: Number(avg ? s.avgRate : s.rate)
+          y: Number(s.geometricMean)
+        }
+      })
+    }
+  }
+
+  inflationData ({ tokenInflation }) {
+    if (tokenInflation.length) {
+      return tokenInflation.filter((s, i) => {
+        if (s.periodicRate) {
+          return true
+        }
+      }).sort((a, b) => {
+        return a.date - b.date;
+      }).map((s, i) => {
+        return {
+          x: new Date(+s.date * 1000).getTime(),
+          y: Number(s.periodicRate)
         }
       })
     }
   }
 
   render() {
-    const { dashboard: { data: { tokenInflation, summaryStatistics }, gittoken: { decimals } } } = this.props
+    const { dashboard: { data: { tokenInflation, tokenInflationMean, summaryStatistics }, gittoken: { decimals } } } = this.props
     const { tokenSupply, tokenSymbol } = summaryStatistics
 
     return (
       <div style={{ marginTop: '25px' }}>
         <div style={{ textAlign: 'left' }}>
-          <h3>{`Long-Term Average Token Inflation`}</h3>
+          <h3>{`Token Supply Inflation`}</h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}
@@ -48,10 +66,10 @@ class TokenInflationChartComponent extends Component {
           <VictoryGroup>
             <VictoryLegend
               data={[
-                { name: 'Long-Term Inflation Average' },
-                { name: 'Short-Term Inflation Average', symbol: { fill: "green" } }
+                { name: 'Long-Term Inflation Geometric Average' },
+                { name: 'Short-Term Inflation Periodic Rate', symbol: { fill: "green" } }
               ]}
-              x={315}
+              x={125}
               y={0}
             />
             <VictoryLine
@@ -59,14 +77,14 @@ class TokenInflationChartComponent extends Component {
                 data: { stroke: "tomato" },
                 parent: { border: "1px solid #ccc"}
               }}
-              data={this.inflationData({ tokenInflation, avg: true })}
+              data={this.inflationMeanData({ tokenInflationMean })}
             />
             <VictoryLine
               style={{
                 data: { stroke: "green" },
                 parent: { border: "1px solid #ccc"}
               }}
-              data={this.inflationData({ tokenInflation, avg: false })}
+              data={this.inflationData({ tokenInflation })}
             />
           </VictoryGroup>
         </VictoryChart>
