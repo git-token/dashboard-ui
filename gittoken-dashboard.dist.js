@@ -13193,6 +13193,9 @@ function retrieveConctractDetails() {
           // console.log('get_user_token_creation::data', data)
           dispatch({ type: 'INIT_DATA', id: "userTokenCreation", value: data });
           break;
+        case 'new_contribution':
+          dispatch({ type: 'UPDATE_DATA', id: "contributionHistory", value: data });
+          break;
         case 'broadcast_contribution_data':
           var leaderboard = data[0];
           var totalSupply = data[1];
@@ -13202,15 +13205,12 @@ function retrieveConctractDetails() {
           var summaryStatistics = data[5];
           var rewardTypeStats = data[6];
           var userTokenCreation = data[7];
-          var contributionHistory = data[8];
 
           /* NOTE Depending on the structure of the data returned and the structure anticipated by the redux store, ensure to use the proper action type (INIT/UPDATE);
           TODO There should be better differentiation here between data structure types...
           */
-
           dispatch(initLeaderboard({ leaderboard: leaderboard }));
           dispatch({ type: 'UPDATE_DATA', id: "totalSupply", value: totalSupply });
-          dispatch({ type: 'UPDATE_DATA', id: "contributionHistory", value: contributionHistory });
           dispatch({ type: 'INIT_DATA', id: "contributionFrequency", value: contributionFrequency });
           dispatch({ type: 'UPDATE_DATA', id: "tokenInflation", value: tokenInflationRate });
           dispatch({ type: 'UPDATE_DATA', id: "tokenInflationMean", value: inflationRateAverage });
@@ -13233,7 +13233,7 @@ function checkEthereumAddress() {
       if (!address) {
         alert('\n          Sorry, we could not find your Ethereum address.\n\n          Please download MetaMask and ensure your MetaMask\n          account is unlocked.\n\n          Refresh this page after updating your MetaMask provider.\n        ');
       } else {
-        dispatch(authenticateGitHubUser({ ethereumAddress: address }));
+        // dispatch(authenticateGitHubUser({ ethereumAddress: address }))
       }
     }).catch(function (error) {
       console.log('checkEthereumAddress::error', error);

@@ -111,6 +111,9 @@ export function retrieveConctractDetails() {
           // console.log('get_user_token_creation::data', data)
           dispatch({ type: 'INIT_DATA', id: "userTokenCreation", value: data })
           break;
+        case 'new_contribution':
+          dispatch({ type: 'UPDATE_DATA', id: "contributionHistory", value: data })
+          break;
         case 'broadcast_contribution_data':
           const leaderboard           = data[0]
           const totalSupply           = data[1]
@@ -120,16 +123,12 @@ export function retrieveConctractDetails() {
           const summaryStatistics     = data[5]
           const rewardTypeStats       = data[6]
           const userTokenCreation     = data[7]
-          const contributionHistory   = data[8]
 
           /* NOTE Depending on the structure of the data returned and the structure anticipated by the redux store, ensure to use the proper action type (INIT/UPDATE);
           TODO There should be better differentiation here between data structure types...
           */
-
-
           dispatch(initLeaderboard({ leaderboard }))
           dispatch({ type: 'UPDATE_DATA', id: "totalSupply", value: totalSupply })
-          dispatch({ type: 'UPDATE_DATA', id: "contributionHistory", value: contributionHistory })
           dispatch({ type: 'INIT_DATA', id: "contributionFrequency", value: contributionFrequency })
           dispatch({ type: 'UPDATE_DATA', id: "tokenInflation", value: tokenInflationRate })
           dispatch({ type: 'UPDATE_DATA', id: "tokenInflationMean", value: inflationRateAverage })
@@ -159,7 +158,7 @@ export function checkEthereumAddress() {
           Refresh this page after updating your MetaMask provider.
         `)
       } else {
-        dispatch(authenticateGitHubUser({ ethereumAddress: address }))
+        // dispatch(authenticateGitHubUser({ ethereumAddress: address }))
       }
     }).catch((error) => {
       console.log('checkEthereumAddress::error', error)
