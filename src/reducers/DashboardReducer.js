@@ -17,10 +17,14 @@ const INITITAL_DASHBOARD_STATE = {
       organization: ''
     }
   },
+  modals: {
+    tos: true
+  },
   views: {
-    activeView: 'Token Statistics',
+    activeView: 'Token Details',
     options: [
-      'Account Settings',
+      'Project Milestones',
+      'Token Offering',
       'Contract Settings'
     ]
   },
@@ -50,6 +54,13 @@ const INITITAL_DASHBOARD_STATE = {
 
 export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action) {
   switch(action.type) {
+    case 'TOGGLE_MODAL':
+      return {
+        ...state,
+        modals: {
+          [action.id]: action.value
+        }
+      }
     case 'UPDATE_GITTOKEN':
       return {
         ...state,

@@ -41,7 +41,7 @@ class TokenDetailsTableComponent extends Component {
                 </tr>
                 <tr >
                   <td>Contract Address</td>
-                  <td>{address}</td>
+                  <td><a href={`https://etherscan.io/address/${address}`} target={"_blank"}>{address}</a></td>
                 </tr>
                 <tr >
                   <td>Reserved Supply</td>

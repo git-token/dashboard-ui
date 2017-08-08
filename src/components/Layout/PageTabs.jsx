@@ -9,6 +9,10 @@ import {
   TokenStatistics
 } from '../Views/index'
 
+import {
+  TermsOfServiceModal
+} from '../Modals/index'
+
 class PageTabsComponent extends Component {
   constructor(opts) {
     super(opts)
@@ -36,10 +40,13 @@ class PageTabsComponent extends Component {
     return (
       <div>
         <Tabs activeKey={activeView} onSelect={this.selectPage.bind(this)} id="page-tabs">
-          {this.renderTabs()}
-          <Tab eventKey={"Token Statistics"} title={"Token Statistics"}>
+          <Tab eventKey={"Token Details"} title={"Token Details"}>
             <TokenStatistics />
           </Tab>
+          <Tab eventKey={"Token Offering"} title={"Token Offering"}>
+            <TermsOfServiceModal />
+          </Tab>
+          {/*this.renderTabs()*/}
         </Tabs>
       </div>
     )

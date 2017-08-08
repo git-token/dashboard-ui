@@ -17,7 +17,6 @@ export function loadWeb3() {
       if(!web3 || !web3.eth || !web3.currentProvider) {
         dispatch(loadWeb3())
       } else {
-        dispatch(checkEthereumAddress())
         dispatch(ConnectToWebSocket())
       }
       return null;
@@ -158,7 +157,7 @@ export function checkEthereumAddress() {
           Refresh this page after updating your MetaMask provider.
         `)
       } else {
-        // dispatch(authenticateGitHubUser({ ethereumAddress: address }))
+        dispatch(authenticateGitHubUser({ ethereumAddress: address }))
       }
     }).catch((error) => {
       console.log('checkEthereumAddress::error', error)
