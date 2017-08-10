@@ -149,7 +149,7 @@ export function checkEthereumAddress() {
       const address = accounts[0]
       if (!address) {
         alert(`
-          Sorry, we could not find your Ethereum address.
+          Sorry, GitToken could not find your Ethereum address.
 
           Please download MetaMask and ensure your MetaMask
           account is unlocked.

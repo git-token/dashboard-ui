@@ -1,6 +1,6 @@
 {
   "name": "gittoken-dashboard",
-  "version": "0.0.74",
+  "version": "0.0.75",
   "description": "Dashboard for GitToken Contracts",
   "main": "./dist/index",
   "scripts": {
@@ -25,6 +25,7 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
+    "serviceworker-webpack-plugin": "^0.2.3",
     "victory": "^0.21.0",
     "web3": "^0.19.1",
     "websocket": "^1.0.24"

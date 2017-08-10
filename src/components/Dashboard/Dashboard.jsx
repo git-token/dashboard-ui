@@ -31,7 +31,7 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(loadWeb3())
+    // dispatch(loadWeb3())
   }
 
   render() {

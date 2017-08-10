@@ -52,7 +52,7 @@ class TokenInflationChartComponent extends Component {
     return (
       <div style={{ marginTop: '25px' }}>
         <div style={{ textAlign: 'left' }}>
-          <h3>{`Token Supply Inflation`} | {(+summaryStatistics['tokenInflation']*100).toFixed(3)} %</h3>
+          <h3>{`Token Supply Growth`} | {(+summaryStatistics['tokenInflation']*100).toFixed(3)} %</h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}
@@ -66,8 +66,8 @@ class TokenInflationChartComponent extends Component {
           <VictoryGroup>
             <VictoryLegend
               data={[
-                { name: 'Long-Term Inflation Geometric Average' },
-                { name: 'Short-Term Inflation Periodic Rate', symbol: { fill: "green" } }
+                { name: 'Long-Term Growth Geometric Average' },
+                { name: 'Short-Term Growth Periodic Rate', symbol: { fill: "green" } }
               ]}
               x={125}
               y={0}
