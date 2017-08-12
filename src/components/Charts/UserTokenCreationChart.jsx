@@ -62,8 +62,8 @@ class UserTokenCreationChartComponent extends Component {
         <VictoryChart
           scale={{x: "time"}}
           theme={VictoryTheme.material}
-          width={600}
-          height={300}
+          width={500}
+          height={200}
           responsive={true}
           domain={{ y: [0, 100] }}
           padding={{ left: 60, bottom: 50, right: 50, top: 50 }}

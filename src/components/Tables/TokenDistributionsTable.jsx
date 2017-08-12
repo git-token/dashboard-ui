@@ -20,12 +20,14 @@ class TokenDistributionsTableComponent extends Component {
     return contributionHistory.sort((a, b) => {
       return b.date - a.date
     }).map((contribution, i) => {
-      const { username, rewardType, value, date } = contribution
+      const { username, rewardType, value, reservedValue, date } = contribution
       return (
         <tr key={i}>
           <td>{username}</td>
           <td>{rewardType}</td>
-          <td>{value / Math.pow(10, decimals)} {symbol}</td>
+          <td>{Number(value / Math.pow(10, decimals)).toLocaleString()} {symbol}</td>
+          <td>{reservedValue > 0 ? Number(reservedValue / Math.pow(10, decimals)).toLocaleString() : 0} {symbol}</td>
+        <td>{Number((+value + +reservedValue) / Math.pow(10, decimals)).toLocaleString()} {symbol}</td>
           <td>{timeAgo({ date })}</td>
         </tr>
       )
@@ -44,7 +46,9 @@ class TokenDistributionsTableComponent extends Component {
               <tr>
                 <th>Contributor</th>
                 <th>Contribution Type</th>
-                <th># of Tokens Distributed</th>
+                <th>Total # of Tokens Distributed</th>
+                <th>Total # of Tokens Reserved</th>
+                <th>Total # of Tokens Created</th>
                 <th>Time Since Contribution</th>
               </tr>
             </thead>

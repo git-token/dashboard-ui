@@ -21,7 +21,7 @@ window.addEventListener('load', () => {
       <Provider store={store}>
           <div>
             <Route exact path="/" component={Views['Welcome']}/>
-          <Route exact path="/dashboard" component={Dashboard}/>
+            <Route exact path="/dashboard" component={Dashboard}/>
           </div>
       </Provider>
     </BrowserRouter>,

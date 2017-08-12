@@ -23,7 +23,7 @@ class TermsOfServiceModalComponent extends Component {
     const { dashboard: { modals: { tos }, gittoken: { tokenDetails } } } = this.props;
 
     const organizationLink = `https://github.com/${tokenDetails['organization']}`
-
+    
     return (
       <Modal show={tos} bsSize={'lg'}>
         <Modal.Header>

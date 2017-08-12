@@ -2,12 +2,30 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import {
-  Tabs, Tab
+  Tabs, Tab, Row, Col
 } from 'react-bootstrap'
 
+import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../actions/DashboardActions'
+
 import {
-  TokenStatistics
+  TokenStatistics,
+  ProjectMilestones,
+  TokenAuction
 } from '../Views/index'
+
+import {
+  TokenDistributionsChart,
+  TokenInflationChart,
+  GitContributionFrequencyChart,
+  TokensVsContributionsScatterChart,
+  UserTokenCreationChart
+} from '../Charts/index'
+
+import {
+  TokenDistributionsTable,
+  LeaderBoardTable,
+  TokenDetailsTable
+} from '../Tables/index'
 
 import {
   TermsOfServiceModal
@@ -16,6 +34,11 @@ import {
 class PageTabsComponent extends Component {
   constructor(opts) {
     super(opts)
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(loadWeb3())
   }
 
   renderTabs() {
@@ -41,13 +64,39 @@ class PageTabsComponent extends Component {
       <div>
         <Tabs activeKey={activeView} onSelect={this.selectPage.bind(this)} id="page-tabs">
           <Tab eventKey={"Token Details"} title={"Token Details"}>
-            <TokenStatistics />
+            <TokenDetailsTable />
           </Tab>
-          <Tab eventKey={"Token Offering"} title={"Token Offering"}>
-            <TermsOfServiceModal />
+          <Tab eventKey={"Contribution History"} title={"Contribution History"}>
+            <Row>
+              <Col sm={6}>
+                <TokenDistributionsChart />
+              </Col>
+              <Col sm={6}>
+                <TokenInflationChart />
+              </Col>
+            </Row>
+            <TokenDistributionsTable />
           </Tab>
-          {/*this.renderTabs()*/}
+          <Tab eventKey={"Leader Board"} title={"Leader Board"}>
+            <Row>
+              <Col sm={6}>
+                <TokensVsContributionsScatterChart />
+              </Col>
+              <Col sm={6}>
+                <UserTokenCreationChart />
+              </Col>
+            </Row>
+            <LeaderBoardTable />
+          </Tab>
+          <Tab eventKey={"Project Milestones"} title={"Project Milestones"}>
+            <ProjectMilestones />
+          </Tab>
+
+          {/*<Tab eventKey={"Token Auctions"} title={"Token Auctions"}>
+            <TokenAuction />
+          </Tab>*/}
         </Tabs>
+        <TermsOfServiceModal />
       </div>
     )
   }

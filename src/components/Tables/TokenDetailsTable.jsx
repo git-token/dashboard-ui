@@ -32,7 +32,7 @@ class TokenDetailsTableComponent extends Component {
           <h3>Token Details</h3>
         </div>
         <Row>
-          <Col sm={12}>
+          <Col sm={6}>
             <Table responsive hover  >
               <tbody>
                 <tr >
@@ -47,14 +47,6 @@ class TokenDetailsTableComponent extends Component {
                   <td>Reserved Supply</td>
                   <td>{Number(reservedSupply / Math.pow(10, decimals)).toLocaleString()} <small>| Token supply held by the contract for auction</small></td>
                 </tr>
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={6}>
-            <Table responsive hover  >
-              <tbody>
                 <tr >
                   <td>Token Name</td>
                 <td>{name}</td>

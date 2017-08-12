@@ -18,33 +18,33 @@ class WelcomeComponent extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(loadWeb3())
-    if (
-      'serviceWorker' in navigator &&
-      (window.location.protocol === 'https:' || window.location.hostname === 'localhost')
-    ) {
-      const registration = runtime.register()
-
-      registerEvents(registration, {
-        onInstalled: () => {
-          console.log('onInstalled')
-        },
-        onUpdateReady: () => {
-          console.log('onUpdateReady')
-        },
-
-        onUpdating: () => {
-          console.log('onUpdating')
-        },
-        onUpdateFailed: () => {
-          console.log('onUpdateFailed')
-        },
-        onUpdated: () => {
-          console.log('onUpdated')
-        },
-      })
-    } else {
-      console.log('serviceWorker not available')
-    }
+    // if (
+    //   'serviceWorker' in navigator &&
+    //   (window.location.protocol === 'https:' || window.location.hostname === 'localhost')
+    // ) {
+    //   const registration = runtime.register()
+    //
+    //   registerEvents(registration, {
+    //     onInstalled: () => {
+    //       console.log('onInstalled')
+    //     },
+    //     onUpdateReady: () => {
+    //       console.log('onUpdateReady')
+    //     },
+    //
+    //     onUpdating: () => {
+    //       console.log('onUpdating')
+    //     },
+    //     onUpdateFailed: () => {
+    //       console.log('onUpdateFailed')
+    //     },
+    //     onUpdated: () => {
+    //       console.log('onUpdated')
+    //     },
+    //   })
+    // } else {
+    //   console.log('serviceWorker not available')
+    // }
   }
 
   render() {
@@ -58,16 +58,24 @@ class WelcomeComponent extends Component {
         <div style={{ textAlign: 'center' }}>
           <Row>
             <Col sm={12}>
-              <img src="./src/assets/images/GitTokenLogo.png" />
+              <div style={{ marginLeft: "-140px", marginBottom: "-100px"}}>
+                <svg height="600px" viewBox="0 0 400 400">
+                  <path d="M 250 200 L 350 150 L 350 250 L 250 300 L 150 250 L 150 150 Q 250 100 250 100 L 250 100 L 315 135 "
+                    fill="transparent"
+                    strokeLinejoin={"round"}
+                    stroke="#ff6a00"
+                    strokeWidth="12"
+                  />
+
+
+                  <circle cx="315" cy="135" r="14" fill="#ff6a00"/>
+                  <circle cx="315" cy="135" r="8" fill="white"/>
+                  <circle cx="250" cy="200" r="14" fill="#ff6a00"/>
+                  <circle cx="250" cy="200" r="8" fill="white"/>
+                </svg>
+              </div>
+              <h1 style={{ fontSize: "144px" }}>GitToken</h1>
             </Col>
-          </Row>
-          <Row>
-            <Col sm={4}></Col>
-            <Col sm={4}>
-              <hr/>
-              <ProgressBar active now={100}/>
-            </Col>
-            <Col sm={4}></Col>
           </Row>
         </div>
       )

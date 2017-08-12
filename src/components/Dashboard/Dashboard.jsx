@@ -4,18 +4,7 @@ import { Route } from 'react-router-dom'
 import {
   Row, Col
 } from 'react-bootstrap'
-import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../actions/DashboardActions'
 
-import {
-  TokenDistributionsChart,
-  GitContributionFrequencyChart,
-  TokensVsContributionsScatterChart
-} from '../Charts/index'
-import {
-  TokenDistributionsTable,
-  LeaderBoardTable,
-  TokenDetailsTable
-} from '../Tables/index'
 import {
   Header,
   Footer,
@@ -46,8 +35,10 @@ class DashboardComponent extends Component {
           </Col>
         </Row>
         <Row>
-          <Col sm={12} style={{marginLeft: '25px'}} >
-            <PageTabs />
+          <Col sm={12}>
+            <div style={{ paddingLeft: '15px', paddingRight: '15px' }}>
+              <PageTabs />
+            </div>
           </Col>
         </Row>
         <Footer />

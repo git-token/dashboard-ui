@@ -33,15 +33,15 @@ class TokenDistributionsChartComponent extends Component {
     const { tokenSupply } = summaryStatistics
 
     return (
-      <div style={{ marginTop: '25px' }}>
+      <div style={{ marginTop: '25px', margin: 'auto' }}>
         <div style={{ textAlign: 'left' }}>
           <h3>{`Total Token Supply | ${Number(tokenSupply / Math.pow(10, decimals)).toLocaleString()} ${symbol}`}</h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}
           theme={VictoryTheme.material}
-          width={600}
-          height={300}
+          width={500}
+          height={200}
           responsive={true}
           padding={{ left: 60, bottom: 50, right: 50, top: 50 }}
         >

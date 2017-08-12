@@ -9,6 +9,7 @@ const INITITAL_DASHBOARD_STATE = {
   gittoken: {
     contributorAddress: '',
     showSideNav: false,
+    timeUntilNextAuction: 0,
     tokenDetails: {
       address: '',
       decimals: 8,
@@ -18,7 +19,7 @@ const INITITAL_DASHBOARD_STATE = {
     }
   },
   modals: {
-    tos: true
+    tos: false
   },
   views: {
     activeView: 'Token Details',
@@ -29,6 +30,7 @@ const INITITAL_DASHBOARD_STATE = {
     ]
   },
   data: {
+    milestones: [],
     totalSupply: [],
     contributionHistory: [],
     leaderboard: {},

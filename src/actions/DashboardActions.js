@@ -82,6 +82,9 @@ export function retrieveConctractDetails() {
           dispatch({ type: 'UPDATE_GITTOKEN', id: "tokenDetails", value: data['contractDetails'] })
           // dispatch(initTotalSupply({ totalSupply: data }))
           break;
+	      case 'get_milestones':
+          dispatch({ type: 'INIT_DATA', id: "milestones", value: data })
+          break;
         case 'get_total_supply':
           dispatch({ type: 'INIT_DATA', id: "totalSupply", value: data })
           // dispatch(initTotalSupply({ totalSupply: data }))
