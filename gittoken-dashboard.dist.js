@@ -6856,8 +6856,6 @@ function checkEthereumAddress() {
       if (!address) {
         alert('\n          Sorry, GitToken could not find your Ethereum address.\n\n          To interact with the GitToken contract services, please download\n          MetaMask, ensure your account is unlocked, and set your RPC\n          provider to http://138.68.225.133:8545.\n\n          Refresh this page after updating your MetaMask provider.\n        ');
       } else {
-        dispatch(authenticateGitHubUser({ ethereumAddress: address }));
-
         dispatch({
           type: 'UPDATE_GITTOKEN',
           id: 'contributorAddress',
@@ -102192,7 +102190,8 @@ var WelcomeComponent = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var dispatch = this.props.dispatch;
-      // dispatch(loadWeb3())
+
+      dispatch((0, _DashboardActions.loadWeb3)());
       // if (
       //   'serviceWorker' in navigator &&
       //   (window.location.protocol === 'https:' || window.location.hostname === 'localhost')
@@ -102517,17 +102516,23 @@ var TermsOfServiceModalComponent = function (_Component) {
     value: function agree() {
       var _props = this.props,
           dispatch = _props.dispatch,
-          tos = _props.dashboard.modals.tos;
+          _props$dashboard = _props.dashboard,
+          contributorAddress = _props$dashboard.gittoken.contributorAddress,
+          tos = _props$dashboard.modals.tos;
 
       dispatch({ type: 'TOGGLE_MODAL', id: 'tos', value: !tos });
-      dispatch((0, _DashboardActions.checkEthereumAddress)());
+      if (contributorAddress.length == 0) {
+        dispatch((0, _DashboardActions.checkEthereumAddress)());
+      } else {
+        dispatch((0, _DashboardActions.authenticateGitHubUser)({ ethereumAddress: contributorAddress }));
+      }
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props$dashboard = this.props.dashboard,
-          tos = _props$dashboard.modals.tos,
-          tokenDetails = _props$dashboard.gittoken.tokenDetails;
+      var _props$dashboard2 = this.props.dashboard,
+          tos = _props$dashboard2.modals.tos,
+          tokenDetails = _props$dashboard2.gittoken.tokenDetails;
 
 
       var organizationLink = 'https://github.com/' + tokenDetails['organization'];

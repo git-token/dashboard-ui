@@ -5,6 +5,7 @@ import {
   Modal, Button
 } from 'react-bootstrap'
 import {
+  authenticateGitHubUser,
   checkEthereumAddress
 } from '../../actions/DashboardActions'
 
@@ -14,9 +15,13 @@ class TermsOfServiceModalComponent extends Component {
   }
 
   agree() {
-    const { dispatch, dashboard: { modals: { tos } } } = this.props;
+    const { dispatch, dashboard: { gittoken: { contributorAddress }, modals: { tos } } } = this.props;
     dispatch({ type: 'TOGGLE_MODAL', id: 'tos', value: !tos });
-    dispatch(checkEthereumAddress())
+    if (contributorAddress.length == 0) {
+      dispatch(checkEthereumAddress())
+    } else {
+      dispatch(authenticateGitHubUser({ ethereumAddress: contributorAddress }))
+    }
   }
 
   render() {
