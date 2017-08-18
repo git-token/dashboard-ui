@@ -33,7 +33,7 @@ class TokenDetailsTableComponent extends Component {
         </div>
         <Row>
           <Col sm={6}>
-            <Table responsive hover  >
+            <Table responsive hover striped >
               <tbody>
                 <tr >
                   <td>GitHub Organization</td>
@@ -71,7 +71,7 @@ class TokenDetailsTableComponent extends Component {
             </Table>
           </Col>
           <Col sm={6}>
-            <Table responsive hover  >
+            <Table responsive hover striped >
               <tbody>
                 <tr >
                   <td>Unique Contributors</td>

@@ -2,7 +2,7 @@ import Promise, { delay, promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import { w3cwebsocket } from 'websocket'
 import axios from 'axios'
-
+import countdown from 'countdown'
 import { initializeContract } from './ContractActions'
 import { socketServer, web3Provider } from '../../app.config'
 
@@ -73,6 +73,7 @@ export function initTotalSupply({ totalSupply }) {
 export function retrieveConctractDetails() {
   return (dispatch) => {
     SocketClient.send(JSON.stringify({ event: 'analytics' }))
+    SocketClient.send(JSON.stringify({ event: 'auction' }))
 
     SocketClient.onmessage = (e) => {
       const { event, data} = JSON.parse(e.data)
@@ -116,6 +117,11 @@ export function retrieveConctractDetails() {
         case 'new_contribution':
           dispatch({ type: 'UPDATE_DATA', id: "contributionHistory", value: data })
           break;
+        case 'get_auctions':
+          dispatch({ type: 'INIT_DATA', id: "auctions", value: data })
+          dispatch(currentAuction({ auctions: data }))
+          dispatch(nextAuction({ auctions: data }))
+          break;
         case 'broadcast_contribution_data':
           const leaderboard           = data[0]
           const totalSupply           = data[1]
@@ -145,6 +151,58 @@ export function retrieveConctractDetails() {
   }
 }
 
+export function signBid({ msg, sender }) {
+  return new Promise((resolve, reject) => {
+    const personal = promisifyAll(web3.personal)
+    let signedHash
+    personal.signAsync(msg, sender).then((result) => {
+      signedHash = result
+      console.log('signedHash', signedHash)
+    //   return personal.ecRecoverAsync(signedHash)
+    // }).then((sig) => {
+    //   console.log('sig', sig)
+    //   resolve({
+    //     signedHash,
+    //   })
+    }).catch((error) => {
+      console.log('error', error)
+      reject(error)
+    })
+  })
+}
+
+export function submitAuctionBid({ offerDetails, decimals }) {
+  return (dispatch) => {
+    console.log('offerDetails', offerDetails)
+    const { contract, round, exchangeRate, bidder, ether } = offerDetails
+    let gittoken = web3.eth.contract(abi).at(contract)
+    gittoken.executeBid = promisifyAll(gittoken.executeBid);
+
+    console.log('gittoken', gittoken)
+
+    gittoken.executeBid.sendTransactionAsync(round, exchangeRate * Math.pow(10, decimals), { from: bidder, to: contract, value: ether * 1e18, gasPrice: 1e10, gas: 1e6 }).then((data) => {
+      console.log('data', data)
+    }).catch((error) => {
+      console.log('error', error)
+    })
+
+    // let msg = web3.sha3("\x19Ethereum Signed Message:\n32", web3.sha3(JSON.stringify(offerDetails)))
+    // signBid({ sender: offerDetails['bidder'], msg }).then(({ signedHash }) => {
+    //   const bid = {
+    //     offerDetails,
+    //     signedBid: {
+    //       offerHash: msg,
+    //       signedHash
+    //     }
+    //   }
+    //
+    //   console.log('bid', JSON.stringify(bid, null, 2))
+    // }).catch((error) => {
+    //   console.log('submitAuctionBid::error', error)
+    // })
+  }
+}
+
 export function checkEthereumAddress() {
   return (dispatch) => {
     const eth = promisifyAll(web3.eth)
@@ -154,13 +212,20 @@ export function checkEthereumAddress() {
         alert(`
           Sorry, GitToken could not find your Ethereum address.
 
-          Please download MetaMask and ensure your MetaMask
-          account is unlocked.
+          To interact with the GitToken contract services, please download
+          MetaMask, ensure your account is unlocked, and set your RPC
+          provider to http://138.68.225.133:8545.
 
           Refresh this page after updating your MetaMask provider.
         `)
       } else {
-        dispatch(authenticateGitHubUser({ ethereumAddress: address }))
+        // dispatch(authenticateGitHubUser({ ethereumAddress: address }))
+
+        dispatch({
+          type: 'UPDATE_GITTOKEN',
+          id: 'contributorAddress',
+          value: address
+        })
       }
     }).catch((error) => {
       console.log('checkEthereumAddress::error', error)
@@ -176,53 +241,88 @@ export function authenticateGitHubUser({ ethereumAddress }) {
           window.location.replace('/auth/github')
         } else {
           const username = user['profile']['username']
-
-          /**
-           * Dispatch details about the user to Redux store for UI rendering
-           */
-
           dispatch({
-            type: 'UPDATE_GITTOKEN_CONTRIBUTORS',
-            id: address,
-            value: username
-          })
-
-          dispatch({
-            type: 'SET_GITTOKEN_DETAILS',
+            type: 'UPDATE_GITTOKEN',
             id: 'contributorAddress',
             value: address
           })
 
           dispatch({
-            type: 'SET_GITHUB_DETAILS',
-            id: 'accessToken',
-            value: user['accessToken']
-          })
-
-          dispatch({
-            type: 'SET_GITHUB_DETAILS',
+            type: 'UPDATE_GITHUB',
             id: 'profile',
             value: user['profile']
           })
         }
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.log('authenticateGitHubUser::error', error)
       })
 
   }
 }
 
-export function timeAgo({ date }) {
-  const now = new Date().getTime()
-  const then = new Date( date * 1000).getTime()
-  const ago = now - then;
+export function nextAuction({ auctions }) {
+  return (dispatch) => {
 
-  const minute = (1000 * 60)
-  const hour   = (1000 * 60 * 60)
-  const day   = (1000 * 60 * 60 * 24)
-  const week   = (1000 * 60 * 60 * 24 * 7)
-  const year   = (1000 * 60 * 60 * 24 * 7 * 52)
+    let Auction = () => {
+      return auctions.sort((a, b) => {
+        return a.startDate - b.startDate
+      }).filter((auction) => {
+        const { startDate, endDate } = auction
+        const now = new Date().getTime()
+        if (now < startDate * 1000) {
+          return true;
+        }
+      }).map((auction) => {
+        return auction
+      })
+    }
+    let nextAuction = Auction()[0]
+    if (nextAuction && nextAuction.startDate) {
+      dispatch({ type: 'INIT_DATA', id: 'nextAuction', value: nextAuction })
+      dispatch(auctionCountdown({ nextAuction: nextAuction }))
+    }
+  }
+}
+
+export function auctionCountdown({ nextAuction }) {
+  return (dispatch) => {
+    const { startDate } = nextAuction
+    setInterval(() => {
+      let timeRemaining = countdown(new Date(nextAuction['startDate'] * 1000)).toString()
+      dispatch({ type: 'INIT_DATA', id: 'countdown', value: timeRemaining })
+    }, 1000)
+  }
+}
+
+export function currentAuction({ auctions }) {
+  return (dispatch) => {
+    auctions.filter((auction) => {
+      const { startDate, endDate } = auction
+      const now = new Date().getTime()
+      if (now > startDate * 1000 && now < endDate * 1000) {
+        return true;
+      }
+    }).map((auction) => {
+      if (auction) {
+        const { initialPrice } = auction
+        dispatch({ type: 'INIT_DATA', id: 'currentAuction', value: auction })
+        dispatch({ type: 'UPDATE_FORM', form: 'auctionBid', id: 'exchangeRateMax', value: initialPrice })
+        dispatch({ type: 'UPDATE_FORM', form: 'auctionBid', id: 'exchangeRate', value: initialPrice })
+      }
+    })
+  }
+}
+
+export function timeAgo({ date }) {
+  const now  = new Date().getTime()
+  const then = new Date( date * 1000).getTime()
+  const ago  = now - then;
+
+  const minute      = (1000 * 60)
+  const hour        = (1000 * 60 * 60)
+  const day         = (1000 * 60 * 60 * 24)
+  const week        = (1000 * 60 * 60 * 24 * 7)
+  const year        = (1000 * 60 * 60 * 24 * 7 * 52)
   const millenium   = (1000 * 60 * 60 * 24 * 7 * 52 * 1000)
 
   // less than a minute ago

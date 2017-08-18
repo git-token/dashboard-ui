@@ -54,7 +54,7 @@ class LeaderBoardTableComponent extends Component {
           <h3>Leader Board</h3>
         </div>
         <div style={{ overflow: 'scroll' }} >
-          <Table responsive hover  >
+          <Table responsive hover striped >
             <thead>
               <tr>
                 <th>Contributor</th>

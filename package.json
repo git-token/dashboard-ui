@@ -1,6 +1,6 @@
 {
   "name": "gittoken-dashboard",
-  "version": "0.0.76",
+  "version": "0.0.77",
   "description": "Dashboard for GitToken Contracts",
   "main": "./dist/index",
   "scripts": {
@@ -12,10 +12,12 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.16.2",
+    "countdown": "^2.6.0",
     "github-graphql-client": "^1.0.0",
-    "gittoken-contracts": "0.0.16",
+    "gittoken-contracts": "0.0.33",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
+    "react-countdown-clock": "^2.0.0",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
     "react-relay": "^1.0.0",

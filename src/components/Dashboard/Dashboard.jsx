@@ -5,6 +5,8 @@ import {
   Row, Col
 } from 'react-bootstrap'
 
+import { checkEthereumAddress } from '../../actions/DashboardActions'
+
 import {
   Header,
   Footer,
@@ -20,7 +22,7 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    // dispatch(loadWeb3())
+    dispatch(checkEthereumAddress())
   }
 
   render() {
@@ -30,13 +32,12 @@ class DashboardComponent extends Component {
       <div>
         <Row>
           <Col sm={12}>
-            <Message />
             <Header />
           </Col>
         </Row>
         <Row>
           <Col sm={12}>
-            <div style={{ paddingLeft: '15px', paddingRight: '15px' }}>
+            <div style={{ paddingLeft: '25px', paddingRight: '25px' }}>
               <PageTabs />
             </div>
           </Col>

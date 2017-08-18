@@ -4,6 +4,13 @@ import { Route } from 'react-router-dom'
 import {
   Row, Col, Panel, Table, ProgressBar
 } from 'react-bootstrap'
+import {
+  NextAuction,
+  CurrentAuction,
+  PastAuctions
+} from './index'
+
+import { currentAuction, nextAuction } from '../../actions/DashboardActions'
 
 
 class TokenAuctionComponent extends Component {
@@ -11,18 +18,23 @@ class TokenAuctionComponent extends Component {
     super(opts)
   }
 
-  render() {
-    const { dispatch, dashboard: { gittoken: { timeUntilNextAuction } } } = this.props
 
-    return (
-      <div style={{ marginTop: "50px"}}>
-        <Row>
-          <Col sm={12}>
-            <p>Days Remaining</p>
-          </Col>
-        </Row>
-      </div>
-    )
+  render() {
+    const { dispatch, dashboard: { gittoken: { tokenDetails }, data: { countdown, nextAuction, currentAuction } } } = this.props
+
+    if (!currentAuction.auctionRound && nextAuction.auctionRound) {
+      return (
+        <NextAuction />
+      )
+    } else if (currentAuction.auctionRound) {
+      return (
+        <CurrentAuction />
+      )
+    } else {
+      return (
+        <PastAuctions />
+      );
+    }
   }
 
 }

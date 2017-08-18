@@ -17,17 +17,19 @@ class ProjectMilestonesComponent extends Component {
 
   list({ milestones }) {
     return milestones.map((milestone, i) => {
-      const { createdBy, createdOn, updatedOn, dueOn, description, title, id } = milestone
+      const { createdBy, createdOn, updatedOn, dueOn, description, title, id, state } = milestone
       const timeFrame = new Date(dueOn).getTime() - new Date(createdOn).getTime();
       const timeRemaining = new Date(dueOn).getTime() - new Date().getTime();
       const daysRemaining = timeRemaining / (60 * 60 * 24 * 1000)
       return (
         <tr key={i}>
           <td>{id}</td>
-          <td><ProgressBar active now={(timeRemaining / timeFrame) * 100}/></td>
+          <td>{state}</td>
+          <td><ProgressBar active now={state == 'closed' ? 100 : (1 - (timeRemaining / timeFrame)) * 100}/></td>
+          <td>{state == 'closed' ? 100 : ((1 - (timeRemaining / timeFrame)) * 100).toLocaleString()} %</td>
           <td>{createdBy}</td>
           <td>{description}</td>
-          <td>{daysRemaining.toLocaleString()} Days</td>
+          <td>{+daysRemaining.toLocaleString() > 0 ? daysRemaining.toLocaleString() : 0} Days</td>
           <td>{new Date(createdOn).toLocaleString()}</td>
           <td>{new Date(dueOn).toLocaleString()}</td>
         </tr>
@@ -44,11 +46,13 @@ class ProjectMilestonesComponent extends Component {
       <div style={{ marginTop: "50px"}}>
         <Row>
           <Col sm={12}>
-            <Table>
+            <Table responsive hover striped>
               <thead>
                 <tr>
                   <th>Milestone ID</th>
+                  <th>Status</th>
                   <th>Progress</th>
+                  <th></th>
                   <th>Created By</th>
                   <th>Description</th>
                   <th>Days Until Due Date</th>

@@ -23,10 +23,28 @@ class TermsOfServiceModalComponent extends Component {
     const { dashboard: { modals: { tos }, gittoken: { tokenDetails } } } = this.props;
 
     const organizationLink = `https://github.com/${tokenDetails['organization']}`
-    
+
     return (
       <Modal show={tos} bsSize={'lg'}>
         <Modal.Header>
+          <div style={{ textAlign: 'center' }}>
+            <a href="https://GitToken.org" target="_blank">
+            <svg height="144" viewBox="0 0 400 400">
+              <path d="M 250 200 L 350 150 L 350 250 L 250 300 L 150 250 L 150 150 Q 250 100 250 100 L 250 100 L 315 135 "
+                fill="transparent"
+                strokeLinejoin={"round"}
+                stroke="#ff6a00"
+                strokeWidth="12"
+              />
+
+
+              <circle cx="315" cy="135" r="14" fill="#ff6a00"/>
+            <circle cx="315" cy="135" r="8" fill="white"/>
+              <circle cx="250" cy="200" r="14" fill="#ff6a00"/>
+            <circle cx="250" cy="200" r="8" fill="white"/>
+            </svg>
+            </a>
+          </div>
           <h1>GitToken Terms of Service</h1>
           <p>Effective Date: {new Date().toLocaleString()}</p>
         </Modal.Header>

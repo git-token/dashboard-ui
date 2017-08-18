@@ -29,9 +29,10 @@ class FooterComponent extends Component {
     return (
       <Row>
         <Col sm={12}>
-          <div style={{ marginTop: "20px", textAlign: 'center' }}>
+            <div style={{ marginTop: "60px", marginLeft: "-20px" }}>
+            <hr/>
             <a href="https://GitToken.org" target="_blank">
-            <svg height="144" viewBox="0 0 400 400">
+            <svg height="144" viewBox="0 0 400 400" style={{ display: "block", margin: 'auto' }}>
               <path d="M 250 200 L 350 150 L 350 250 L 250 300 L 150 250 L 150 150 Q 250 100 250 100 L 250 100 L 315 135 "
                 fill="transparent"
                 strokeLinejoin={"round"}

@@ -91,10 +91,9 @@ class PageTabsComponent extends Component {
           <Tab eventKey={"Project Milestones"} title={"Project Milestones"}>
             <ProjectMilestones />
           </Tab>
-
-          {/*<Tab eventKey={"Token Auctions"} title={"Token Auctions"}>
+          <Tab eventKey={"Token Auction"} title={"Token Auction"}>
             <TokenAuction />
-          </Tab>*/}
+          </Tab>
         </Tabs>
         <TermsOfServiceModal />
       </div>

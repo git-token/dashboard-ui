@@ -13,23 +13,34 @@ const INITITAL_DASHBOARD_STATE = {
     tokenDetails: {
       address: '',
       decimals: 8,
-      name: '',
-      symbol: '',
+      name: 'GitToken',
+      symbol: 'GTK',
       organization: ''
     }
   },
+  forms: {
+    auctionBid: {
+      bidder: '0x0',
+      contract: '',
+      round: 0,
+      exchangeRate: 0,
+      exchangeRateMax: 0,
+      ether: 1,
+      tokens: 1000,
+    }
+  },
   modals: {
-    tos: false
+    tos: true
   },
   views: {
     activeView: 'Token Details',
-    options: [
-      'Project Milestones',
-      'Token Offering',
-      'Contract Settings'
-    ]
+    options: []
   },
   data: {
+    countdown: '',
+    currentAuction: {},
+    nextAuction: {},
+    auctions: [],
     milestones: [],
     totalSupply: [],
     contributionHistory: [],
@@ -60,6 +71,14 @@ export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action)
       return {
         ...state,
         modals: {
+          [action.id]: action.value
+        }
+      }
+    case 'UPDATE_GITHUB':
+      return {
+        ...state,
+        github: {
+          ...state['github'],
           [action.id]: action.value
         }
       }
@@ -107,6 +126,17 @@ export default function DashboardReducer(state=INITITAL_DASHBOARD_STATE, action)
         views: {
           ...state['views'],
           [action.id]: action.value
+        }
+      }
+    case 'UPDATE_FORM':
+      return {
+        ...state,
+        forms: {
+          ...state['forms'],
+          [action.form]: {
+            ...state['forms'][action.form],
+            [action.id]: action.value
+          }
         }
       }
     default:

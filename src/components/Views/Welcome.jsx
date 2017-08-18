@@ -7,7 +7,7 @@ import applyUpdate from 'serviceworker-webpack-plugin/lib/browser/applyUpdate'
 import {
   Row, Col, ProgressBar
 } from 'react-bootstrap'
-import { ConnectToWebSocket, authenticateGitHubUser, loadWeb3 } from '../../actions/DashboardActions'
+import { loadWeb3 } from '../../actions/DashboardActions'
 
 
 class WelcomeComponent extends Component {

@@ -41,7 +41,7 @@ class TokenDistributionsTableComponent extends Component {
           <h3>Contribution History</h3>
         </div>
         <div style={{ height: 400, overflow: 'scroll' }} >
-          <Table responsive hover  >
+          <Table responsive hover striped >
             <thead>
               <tr>
                 <th>Contributor</th>
