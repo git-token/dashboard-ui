@@ -17,7 +17,7 @@ class WelcomeComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(loadWeb3())
+    // dispatch(loadWeb3())
     // if (
     //   'serviceWorker' in navigator &&
     //   (window.location.protocol === 'https:' || window.location.hostname === 'localhost')

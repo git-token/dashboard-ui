@@ -219,7 +219,7 @@ export function checkEthereumAddress() {
           Refresh this page after updating your MetaMask provider.
         `)
       } else {
-        // dispatch(authenticateGitHubUser({ ethereumAddress: address }))
+        dispatch(authenticateGitHubUser({ ethereumAddress: address }))
 
         dispatch({
           type: 'UPDATE_GITTOKEN',
