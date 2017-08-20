@@ -117,10 +117,20 @@ export function retrieveConctractDetails() {
         case 'new_contribution':
           dispatch({ type: 'UPDATE_DATA', id: "contributionHistory", value: data })
           break;
+        case 'get_auction_bids':
+          dispatch({ type: 'INIT_DATA', id: "auctionBids", value: data })
+          break;
+        case 'get_auction_history':
+          console.log('data', data)
+          dispatch({ type: 'INIT_DATA', id: "auctionHistory", value: data })
+          break;
         case 'get_auctions':
           dispatch({ type: 'INIT_DATA', id: "auctions", value: data })
           dispatch(currentAuction({ auctions: data }))
           dispatch(nextAuction({ auctions: data }))
+          break;
+        case 'broadcast_auction_bid_data':
+          dispatch({ type: 'UPDATE_DATA', id: "auctionBids", value: data })
           break;
         case 'broadcast_contribution_data':
           const leaderboard           = data[0]

@@ -30,10 +30,10 @@ const INITITAL_DASHBOARD_STATE = {
     }
   },
   modals: {
-    tos: true
+    tos: false
   },
   views: {
-    activeView: 'Token Details',
+    activeView: 'Token Auction',
     options: []
   },
   data: {
@@ -41,6 +41,8 @@ const INITITAL_DASHBOARD_STATE = {
     currentAuction: {},
     nextAuction: {},
     auctions: [],
+    auctionBids: [],
+    auctionHistory: [],
     milestones: [],
     totalSupply: [],
     contributionHistory: [],

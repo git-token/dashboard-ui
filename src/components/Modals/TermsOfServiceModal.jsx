@@ -20,7 +20,7 @@ class TermsOfServiceModalComponent extends Component {
     if (contributorAddress.length == 0) {
       dispatch(checkEthereumAddress())
     } else {
-      dispatch(authenticateGitHubUser({ ethereumAddress: contributorAddress }))
+      // dispatch(authenticateGitHubUser({ ethereumAddress: contributorAddress }))
     }
   }
 
@@ -38,14 +38,14 @@ class TermsOfServiceModalComponent extends Component {
               <path d="M 250 200 L 350 150 L 350 250 L 250 300 L 150 250 L 150 150 Q 250 100 250 100 L 250 100 L 315 135 "
                 fill="transparent"
                 strokeLinejoin={"round"}
-                stroke="#ff6a00"
+                stroke="#e95420"
                 strokeWidth="12"
               />
 
 
-              <circle cx="315" cy="135" r="14" fill="#ff6a00"/>
+              <circle cx="315" cy="135" r="14" fill="#e95420"/>
             <circle cx="315" cy="135" r="8" fill="white"/>
-              <circle cx="250" cy="200" r="14" fill="#ff6a00"/>
+              <circle cx="250" cy="200" r="14" fill="#e95420"/>
             <circle cx="250" cy="200" r="8" fill="white"/>
             </svg>
             </a>

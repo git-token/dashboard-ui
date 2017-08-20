@@ -9,6 +9,10 @@ import {
   AuctionBidForm
 } from '../Forms/index'
 
+import {
+  AuctionBidsChart
+} from '../Charts/index'
+
 class CurrentAuctionComponent extends Component {
   constructor(opts) {
     super(opts)
@@ -24,7 +28,7 @@ class CurrentAuctionComponent extends Component {
           <AuctionBidForm />
         </Col>
         <Col sm={8}>
-          
+          <AuctionBidsChart />
         </Col>
       </Row>
     )
