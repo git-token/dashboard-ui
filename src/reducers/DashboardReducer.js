@@ -33,7 +33,7 @@ const INITITAL_DASHBOARD_STATE = {
     tos: false
   },
   views: {
-    activeView: 'Token Auction',
+    activeView: 'Auctions',
     options: []
   },
   data: {

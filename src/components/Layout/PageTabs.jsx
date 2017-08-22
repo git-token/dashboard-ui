@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Route } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import {
   Tabs, Tab, Row, Col
 } from 'react-bootstrap'
@@ -18,7 +18,8 @@ import {
   TokenInflationChart,
   GitContributionFrequencyChart,
   TokensVsContributionsScatterChart,
-  UserTokenCreationChart
+  UserTokenCreationChart,
+  AuctionBidsChart
 } from '../Charts/index'
 
 import {
@@ -59,7 +60,7 @@ class PageTabsComponent extends Component {
   }
 
   render() {
-    const { dashboard: { views: { activeView, options } } } = this.props
+    const { dashboard: { gittoken: { tokenDetails }, views: { activeView, options } } } = this.props
     return (
       <div>
         <Tabs activeKey={activeView} onSelect={this.selectPage.bind(this)} id="page-tabs">
@@ -91,8 +92,11 @@ class PageTabsComponent extends Component {
           <Tab eventKey={"Project Milestones"} title={"Project Milestones"}>
             <ProjectMilestones />
           </Tab>
-          <Tab eventKey={"Token Auction"} title={"Token Auction"}>
+          <Tab eventKey={"Auctions"} title={"Auctions"}>
             <TokenAuction />
+          </Tab>
+          <Tab eventKey={`${tokenDetails['symbol']}/ETH`} title={`${tokenDetails['symbol']}/ETH`}>
+            <AuctionBidsChart />
           </Tab>
         </Tabs>
         <TermsOfServiceModal />

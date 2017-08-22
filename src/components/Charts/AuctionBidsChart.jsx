@@ -32,8 +32,8 @@ class AuctionBidsChartComponent extends Component {
 
     return (
       <div style={{ marginTop: '25px', margin: 'auto' }}>
-        <div style={{ textAlign: 'left' }}>
-          <h3>Auction {auctionRound} | Weighted Average Exchange Rate {symbol} / ETH</h3>
+        <div style={{ textAlign: 'center' }}>
+          <h3>{symbol}/ETH Exchange Rate </h3>
         </div>
         <VictoryChart
           scale={{x: "time"}}

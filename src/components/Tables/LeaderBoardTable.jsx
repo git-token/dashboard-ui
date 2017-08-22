@@ -58,7 +58,7 @@ class LeaderBoardTableComponent extends Component {
             <thead>
               <tr>
                 <th>Contributor</th>
-                <th># of Tokens Created</th>
+                <th># of Tokens Issued</th>
                 <th># of GitHub Contributions</th>
                 <th>Percent (%) of Tokens Contributed To</th>
                 <th>Percent (%) of Tokens Created</th>

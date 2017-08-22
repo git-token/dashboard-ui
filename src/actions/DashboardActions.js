@@ -287,16 +287,15 @@ export function nextAuction({ auctions }) {
     let nextAuction = Auction()[0]
     if (nextAuction && nextAuction.startDate) {
       dispatch({ type: 'INIT_DATA', id: 'nextAuction', value: nextAuction })
-      dispatch(auctionCountdown({ nextAuction: nextAuction }))
+      dispatch(auctionCountdown({ date: nextAuction['startDate'] }))
     }
   }
 }
 
-export function auctionCountdown({ nextAuction }) {
+export function auctionCountdown({ date }) {
   return (dispatch) => {
-    const { startDate } = nextAuction
     setInterval(() => {
-      let timeRemaining = countdown(new Date(nextAuction['startDate'] * 1000)).toString()
+      let timeRemaining = countdown(new Date(date * 1000)).toString()
       dispatch({ type: 'INIT_DATA', id: 'countdown', value: timeRemaining })
     }, 1000)
   }
@@ -326,12 +325,12 @@ export function timeAgo({ date }) {
   const then = new Date( date * 1000).getTime()
   const ago  = now - then;
 
-  const minute      = (1000 * 60)
-  const hour        = (1000 * 60 * 60)
-  const day         = (1000 * 60 * 60 * 24)
-  const week        = (1000 * 60 * 60 * 24 * 7)
-  const year        = (1000 * 60 * 60 * 24 * 7 * 52)
-  const millenium   = (1000 * 60 * 60 * 24 * 7 * 52 * 1000)
+  const minute      = (1000   * 60)
+  const hour        = (minute * 60)
+  const day         = (hour   * 24)
+  const week        = (day    * 7)
+  const year        = (year   * 52)
+  const millenium   = (year   * 1000)
 
   // less than a minute ago
   if (ago < minute) {

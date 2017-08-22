@@ -20,7 +20,7 @@ class TermsOfServiceModalComponent extends Component {
     if (contributorAddress.length == 0) {
       dispatch(checkEthereumAddress())
     } else {
-      // dispatch(authenticateGitHubUser({ ethereumAddress: contributorAddress }))
+      dispatch(authenticateGitHubUser({ ethereumAddress: contributorAddress }))
     }
   }
 
