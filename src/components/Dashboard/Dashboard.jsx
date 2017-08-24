@@ -5,7 +5,6 @@ import {
   Row, Col
 } from 'react-bootstrap'
 
-import { checkEthereumAddress } from '../../actions/DashboardActions'
 
 import {
   Header,
@@ -22,27 +21,39 @@ class DashboardComponent extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    dispatch(checkEthereumAddress())
   }
 
   render() {
-    const { dispatch, dashboard: { gittoken: { showSideNav } } } = this.props
+    const { dashboard } = this.props
 
     return (
       <div>
-        <Row>
-          <Col sm={12}>
-            <Header />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12}>
-            <div style={{ paddingLeft: '25px', paddingRight: '25px' }}>
-              <PageTabs />
-            </div>
-          </Col>
-        </Row>
-        <Footer />
+        <div style={{ background: 'linear-gradient(45deg, #0c0019, #493f5b)', height: '400px' }}>
+  				<Row>
+  					<Col sm={12}>
+              <SideNav />
+  						<Header />
+  					</Col>
+  				</Row>
+        </div>
+        <div style={{ background: 'linear-gradient(-225deg, #0c0019, #493f5b)', height: '400px' }}>
+          <Row>
+  					<Col sm={12}>
+              <div style={{  }}>
+                <p>Testing</p>
+              </div>
+  					</Col>
+  				</Row>
+  			</div>
+        <div style={{ background: 'linear-gradient(45deg, #0c0019, #493f5b)', height: '400px' }}>
+          <Row>
+  					<Col sm={12}>
+              <div style={{  }}>
+                <p>Testing</p>
+              </div>
+  					</Col>
+  				</Row>
+  			</div>
       </div>
     )
   }

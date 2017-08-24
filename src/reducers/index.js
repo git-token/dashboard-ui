@@ -1,4 +1,4 @@
-import dashboard from './DashboardReducer'
+import dashboard from './dashboard'
 
 export {
   dashboard
