@@ -6872,7 +6872,7 @@ function authenticateGitHubUser(_ref6) {
   var ethereumAddress = _ref6.ethereumAddress;
 
   return function (dispatch) {
-    _axios2.default.post('https://gittoken.org/gittoken/verify/' + ethereumAddress).then(function (result) {
+    _axios2.default.post('https://gittoken.io/gittoken/verify/' + ethereumAddress).then(function (result) {
       var _result$data = result.data,
           authentication = _result$data.authentication,
           address = _result$data.address,
@@ -51387,9 +51387,9 @@ module.exports = Cancel;
 
 
 module.exports = {
-  web3Provider: "https://gittoken.org/web3/",
+  web3Provider: "https://web3.gittoken.io",
   useMetaMask: true,
-  socketServer: 'wss://gittoken.org/ws/',
+  socketServer: 'wss://socket.gittoken.io',
   contractAddress: '0xedc2fe67c31c2aca5cf5866b2208fe1ec113e8c8'
 };
 

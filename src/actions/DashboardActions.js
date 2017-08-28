@@ -233,7 +233,7 @@ export function checkEthereumAddress() {
 
 export function authenticateGitHubUser({ ethereumAddress }) {
   return (dispatch) => {
-      axios.post(`https://gittoken.org/gittoken/verify/${ethereumAddress}`).then((result) => {
+      axios.post(`https://gittoken.io/gittoken/verify/${ethereumAddress}`).then((result) => {
         const { data: { authentication, address, user } } = result
         if (!authentication) {
           window.location.replace('/auth/github')
