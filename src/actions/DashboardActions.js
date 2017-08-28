@@ -131,11 +131,13 @@ export function retrieveConctractDetails() {
           const summaryStatistics     = data[5]
           const rewardTypeStats       = data[6]
           const userTokenCreation     = data[7]
-
+					const contribution          = data[8]	
+			
           /* NOTE Depending on the structure of the data returned and the structure anticipated by the redux store, ensure to use the proper action type (INIT/UPDATE);
           TODO There should be better differentiation here between data structure types...
           */
           dispatch(initLeaderboard({ leaderboard }))
+					dispatch({ type: 'UPDATE_DATAE', id: "contributionHistory", value: contribution })
           dispatch({ type: 'UPDATE_DATA', id: "totalSupply", value: totalSupply })
           dispatch({ type: 'INIT_DATA', id: "contributionFrequency", value: contributionFrequency })
           dispatch({ type: 'UPDATE_DATA', id: "tokenInflation", value: tokenInflationRate })
