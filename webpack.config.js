@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
+// const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 
 module.exports = {
   devtool: 'cheap-module-source-map',
@@ -16,7 +16,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react', 'stage-0']
+          presets: ['env', 'react', 'stage-0']
         }
       }, {
         test : /.json?$/,
@@ -33,8 +33,8 @@ module.exports = {
     new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"development"'
     })
-    ,new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, 'sw.js'),
-    })
+    // new ServiceWorkerWebpackPlugin({
+    //   entry: path.join(__dirname, 'sw.js'),
+    // })
   ]
 }
